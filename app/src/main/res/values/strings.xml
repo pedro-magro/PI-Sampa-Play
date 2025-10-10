@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sampa Play</string>
+
+    <!-- Adicione este array para o filtro do Spinner -->
+    <string-array name="tipos_esporte_array">
+        <item>Selecione o Tipo</item>
+        <item>Futebol de Campo</item>
+        <item>Futebol de Salão</item>
+        <item>Basquete</item>
+        <item>Vôlei</item>
+        <item>Tênis</item>
+        <item>Academia ao Ar Livre</item>
+    </string-array>
+</resources>

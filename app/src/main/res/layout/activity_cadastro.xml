@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"> <!-- Aumentando o padding para melhor visualização -->
+
+    <!-- Título da Tela -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Novo Usuário"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_horizontal"
+        android:textColor="#212121"
+        android:contentDescription="Título da tela de cadastro de novo usuário" />
+
+    <!-- Campo Nome Completo -->
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome Completo"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:contentDescription="Campo para digitar o nome completo" />
+
+    <!-- Campo Email (Dado Sensível/Não Sensível) -->
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:contentDescription="Campo para digitar o email" />
+
+    <!-- Campo Senha (Dado Sensível) -->
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Senha"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:contentDescription="Campo para digitar a senha" />
+
+    <!-- Botão de Ação -->
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Cadastrar"
+        android:contentDescription="Botão para confirmar o cadastro" />
+
+    <!-- Link para Login -->
+    <TextView
+        android:id="@+id/loginLink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="Já tem uma conta? Faça o Login"
+        android:textColor="#D50000" />
+
+</LinearLayout>
