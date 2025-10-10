@@ -46,9 +46,9 @@ interface ApiService {
     @FormUrlEncoded
     @POST("cadastro.php")
     fun cadastrarUsuario(
-        @Field("USUARIO_NOME") nome: String,
-        @Field("USUARIO_EMAIL") email: String,
-        @Field("USUARIO_SENHA") senha : String
+        @Field("USUARIO_NOME") usuarioNome: String,
+        @Field("USUARIO_EMAIL") usuarioEmail: String,
+        @Field("USUARIO_SENHA") usuarioSenha : String
     ):Call<CadastroResponse>
 
     @FormUrlEncoded
