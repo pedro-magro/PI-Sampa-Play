@@ -23,7 +23,7 @@ class MainActivity2 : AppCompatActivity() {
         var btnEnviar = findViewById<Button>(R.id.btnEnviar)
         btnEnviar.setOnClickListener() {
             var txtNome = edtNome.text.toString()
-            val intent = Intent(this, MainActivity3::class.java)
+            val intent = Intent(this, ItemDetalheActivity::class.java)
             intent.putExtra("chave1", txtNome)
 
             startActivity(intent)

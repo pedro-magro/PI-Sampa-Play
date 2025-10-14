@@ -65,5 +65,7 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.9.0")
     //Picasso
     implementation("com.squareup.picasso:picasso:2.8")
+    //EncryptedSharedPreferences
+    implementation("androidx.security:security-crypto:1.0.0")
 
 }

@@ -13,6 +13,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
+
 
 
 class LoginActivity : AppCompatActivity() {
@@ -20,6 +23,8 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +40,35 @@ class LoginActivity : AppCompatActivity() {
             blockLogin()
         }
     }
+    //Salvar depois em arquivo unico sobre sessão do usuário.
+    fun salvarEmail(email: String){
+        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
 
+        val sharedPreferences = EncryptedSharedPreferences.create(
+            "email_seguro",
+            masterKeyAlias,
+            applicationContext,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+
+        val editor = sharedPreferences.edit()
+        editor.putString("email", email)
+        editor.apply()
+    }
+    fun recuperarEmailUsuarioSeguro(): String? {
+        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+
+        val sharedPreferences = EncryptedSharedPreferences.create(
+            "email-seguro",
+            masterKeyAlias,
+            applicationContext,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+
+        return sharedPreferences.getString("USER_EMAIL", null)
+    }
 
     private fun blockLogin() {
         val email = emailEditText.text.toString().trim()
@@ -59,6 +92,7 @@ class LoginActivity : AppCompatActivity() {
             if (response.isSuccessful && response.body() != null) { val loginResponses = response.body()!!
                 if (loginResponses.isNotEmpty()) {
                     val intent = Intent(this@LoginActivity, EspacosActivity::class.java)
+                    salvarEmail(email)
                     startActivity(intent)
                     finish()
                 } else {
