@@ -91,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
         ) {
             if (response.isSuccessful && response.body() != null) { val loginResponses = response.body()!!
                 if (loginResponses.isNotEmpty()) {
-                    val intent = Intent(this@LoginActivity, EspacosActivity::class.java)
+                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                     salvarEmail(email)
                     startActivity(intent)
                     finish()

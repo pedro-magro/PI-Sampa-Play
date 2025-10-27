@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class IncluirEspacoActivity : AppCompatActivity() {
+class IncluirEspacoActivity : BaseActivity() {
 
     private lateinit var nomeEditText: EditText
     private lateinit var enderecoEditText: EditText

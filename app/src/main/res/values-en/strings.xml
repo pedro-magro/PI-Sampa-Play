@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Sampa Play</string>
+
+    <string name="login_title">Sign In</string>
+    <string name="login_email_hint">Enter your email</string>
+    <string name="login_password_hint">Enter your password</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_button">Access</string>
+    <string name="login_no_account">Don\'t have an account? Sign up</string>
+
+    <string name="register_title">New User</string>
+    <string name="register_name_hint">Enter your full name</string>
+    <string name="register_button">Register</string>
+    <string name="register_has_account">Already have an account? Sign In</string>
+
+    <string name="home_title">Courts Catalog</string>
+    <string name="card_details_button">Learn More</string>
+    <string name="card_delete_button">Delete</string>
+    <string name="card_edit_button">Edit</string>
+    <string name="default_name">Name Not Informed</string>
+    <string name="default_address">Address Not Informed</string>
+    <string name="default_category">Type: N/A</string>
+
+    <string name="search_title">Filter and Search Courts</string>
+    <string name="search_hint">Search by Name or Address</string>
+    <string name="search_label_type">1. Sport Type:</string>
+    <string name="search_button_apply">Apply Filters</string>
+    <string name="search_results_title">Search Results:</string>
+
+    <string name="details_title">Space Details</string>
+    <string name="details_location_label">Full Location</string>
+    <string name="details_button_maps">Open in Google Maps</string>
+    <string name="details_button_whatsapp">Invite Friends via WhatsApp</string>
+
+    <string name="feedback_form_title">Leave your Feedback</string>
+    <string name="feedback_condition_label">What is the current condition?</string>
+    <string name="feedback_condition_good">Good (Ready to use)</string>
+    <string name="feedback_condition_fair">Fair (Needs repairs)</string>
+    <string name="feedback_condition_bad">Bad / Unsafe</string>
+    <string name="feedback_observation_hint">Write your observation (optional)...</string>
+    <string name="feedback_button_send">Send Feedback</string>
+    <string name="feedback_list_title">Community Feedbacks</string>
+
+    <string name="about_title">About Sampa Play</string>
+    <string name="about_description">Sampa Play is your definitive app to find public areas...</string>
+    <string name="about_project_data">Project Data</string>
+    <string name="about_developer">Developer: Pedro Henrique de Lima Simões Magro</string>
+    <string name="about_discipline">Discipline: Mobile-Oriented Programming</string>
+    <string name="about_coordinator">Advisor: Mauricio Ferraz Kubo</string>
+    <string name="about_contacts_links">Contacts and Links</string>
+    <string name="about_contact_email">Email for Contact</string>
+    <string name="about_contact_linkedin">LinkedIn</string>
+
+    <string name="toast_register_success">User registered successfully!</string>
+    <string name="toast_register_fail">Error registering. Try again.</string>
+    <string name="toast_update_success">Space updated successfully!</string>
+    <string name="toast_update_fail">Error during update</string>
+    <string name="toast_delete_success">Space deleted successfully!</string>
+    <string name="toast_delete_fail">Error deleting space</string>
+    <string name="toast_feedback_success">Feedback sent successfully!</string>
+    <string name="toast_feedback_fail">Error sending. Try again.</string>
+    <string name="toast_search_no_results">No results found</string>
+    <string name="toast_connection_fail">Connection failed</string>
+
+</resources>

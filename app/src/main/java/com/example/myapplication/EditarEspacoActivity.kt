@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import com.example.myapplication.ApiService
 import com.example.myapplication.Espaco
 
-class EditarEspacoActivity : AppCompatActivity() {
+class EditarEspacoActivity : BaseActivity() {
 
     private lateinit var nomeEditText: EditText
     private lateinit var enderecoEditText: EditText

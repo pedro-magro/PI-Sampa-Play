@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.ApiService
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -25,11 +26,14 @@ private lateinit var recyclerView: RecyclerView
 private lateinit var adapter: HomeAdapter
 
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home)
+
+        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        setupBottomNavigation(navView, R.id.nav_home)
 
         recyclerView = findViewById(R.id.recyclerViewEspacos)
         recyclerView.layoutManager = LinearLayoutManager(this)

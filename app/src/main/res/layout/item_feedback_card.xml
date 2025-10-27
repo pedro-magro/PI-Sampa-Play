@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="4dp">
+
+        <ImageView
+            android:id="@+id/ivFeedbackIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            app:tint="#D50000"
+            tools:src="@drawable/ic_feedback_ruim_24dp" />
+
+        <TextView
+            android:id="@+id/tvFeedbackStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#212121"
+            tools:text="Ruim/Insegura" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvFeedbackObservacao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#212121"
+        android:textSize="14sp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="8dp"
+        tools:text="O piso está com muitas rachaduras e a rede de proteção está danificada. Não é seguro jogar aqui." />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="28dp">
+
+        <ImageView
+            android:id="@+id/ivFeedbackDateIcon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginEnd="4dp"
+            app:tint="#757575"
+            android:src="@drawable/ic_calendar_black_24dp" />
+
+        <TextView
+            android:id="@+id/tvFeedbackDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#757575"
+            tools:text="05/05/2024" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F5F5F5"
+        android:layout_marginTop="12dp"/>
+
+</LinearLayout>

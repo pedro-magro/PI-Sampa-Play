@@ -8,139 +8,95 @@
     android:padding="16dp"
     tools:context=".BuscaActivity">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/filtros_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="Filtrar e Buscar Quadras"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#212121"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Título da tela de busca"/>
 
-            <!-- Título Principal -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Filtrar e Buscar Quadras"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="#212121"
-                android:layout_marginBottom="16dp"
-                android:contentDescription="Título da tela de busca"/>
+        <EditText
+            android:id="@+id/etBuscaTexto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Buscar por Nome ou Endereço"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Campo para digitar o termo de busca"/>
 
-            <!-- Campo de Busca por Texto -->
-            <EditText
-                android:id="@+id/etBuscaTexto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Buscar por Nome ou Endereço"
-                android:inputType="text"
-                android:minHeight="48dp"
-                android:layout_marginBottom="16dp"
-                android:contentDescription="Campo para digitar o termo de busca"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. Tipo de Esporte:"
+            android:textSize="16sp"
+            android:textColor="#212121"/>
 
-            <!-- 1. Filtro Tipo de Esporte (Spinner - Componente Obrigatório) -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1. Tipo de Esporte:"
-                android:textSize="16sp"
-                android:textColor="#212121"/>
+        <Spinner
+            android:id="@+id/spinnerTipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="Lista suspensa para selecionar o tipo de esporte"/>
 
-            <Spinner
-                android:id="@+id/spinnerTipo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/tipos_esporte_array"
-                android:minHeight="48dp"
-                android:layout_marginBottom="24dp"
-                android:contentDescription="Lista suspensa para selecionar o tipo de esporte"/>
+        <Button
+            android:id="@+id/btnAplicarBusca"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aplicar Filtros"
+            android:backgroundTint="#D50000"
+            android:textColor="@android:color/white"
+            android:contentDescription="Botão para aplicar os filtros de busca" />
 
-            <!-- 2. Filtro de Condição (RadioGroup/RadioButton - Componente Obrigatório) -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="2. Condição de Uso:"
-                android:textSize="16sp"
-                android:textColor="#212121"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Resultados da Busca:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#212121"
+            android:layout_marginTop="24dp"/>
 
-            <RadioGroup
-                android:id="@+id/rgCondicao"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp"
-                android:contentDescription="Grupo de botões para filtrar a condição da quadra (Radio Group)">
+    </LinearLayout> <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/rvResultadosBusca"
+    android:layout_width="match_parent"
 
-                <RadioButton
-                    android:id="@+id/rbCondicaoBoa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Apenas em Boa Condição"
-                    android:buttonTint="#D50000" />
+    android:layout_height="0dp"
 
-                <RadioButton
-                    android:id="@+id/rbCondicaoReparo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Com Pequenos Reparos Necessários"
-                    android:buttonTint="#D50000" />
+    android:background="#F5F5F5"
+    android:layout_marginTop="8dp"
 
-            </RadioGroup>
+    app:layout_constraintTop_toBottomOf="@id/filtros_container"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
 
-            <!-- 3. Filtros Extras (CheckBox - Componente Obrigatório) -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="3. Outros Status:"
-                android:textSize="16sp"
-                android:textColor="#212121"
-                android:layout_marginTop="16dp"/>
+        app:menu="@menu/bottom_nav_menu"
+        android:background="@android:color/white"
 
-            <CheckBox
-                android:id="@+id/cbIluminada"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Iluminada (Uso Noturno)"
-                android:buttonTint="#D50000" />
+        app:itemIconTint="@color/bottom_nav_selector"
+        app:itemTextColor="@color/bottom_nav_selector"
+        android:elevation="8dp"/>
 
-            <CheckBox
-                android:id="@+id/cbSegura"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Com Relatos Recentes de Segurança"
-                android:buttonTint="#D50000"
-                android:layout_marginBottom="24dp"/>
-
-            <!-- Botão de Ação -->
-            <Button
-                android:id="@+id/btnAplicarBusca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Aplicar Filtros"
-                android:backgroundTint="#D50000"
-                android:textColor="@android:color/white"
-                android:contentDescription="Botão para aplicar os filtros de busca" />
-
-            <!-- Área de Resultados (RecyclerView) - Requisito de Comprovação -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Resultados da Busca (Mock):"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#212121"
-                android:layout_marginTop="24dp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvResultadosBusca"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="#F5F5F5"
-                android:layout_marginTop="8dp"/>
-
-        </LinearLayout>
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

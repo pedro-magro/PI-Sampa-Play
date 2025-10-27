@@ -5,6 +5,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -51,10 +52,29 @@ interface ApiService {
         @Field("USUARIO_SENHA") usuarioSenha : String
     ):Call<CadastroResponse>
 
-    @FormUrlEncoded
+
     @GET("busca.php")
     fun buscarEspaco(
-        @Field("ESPACO_NOME") nome:String?,
-        @Field("CATEGORIA_ID") categoriaId: Int?
-    ):Call<Void>
+        @Query("termo") termo:String?,
+        @Query("categoria_id") categoriaId: Int?
+    ):Call<List<Espaco>>
+
+
+    @GET("categorias.php")
+    fun getCategorias() : Call<List<Categoria>>
+
+    @FormUrlEncoded
+    @POST("enviar_feedback.php")
+    fun enviarFeedback(
+        @Field("ESPACO_ID") espacoId: Int,
+        @Field("USUARIO_ID") usuarioId: Int,
+        @Field("CONDICAO_ID") condicaoId: Int,
+        @Field("FEEDBACK_OBSERVACAO") feedbackObservacao: String
+    ): Call<Void>
+
+    @GET("feedbacks.php")
+    fun getFeedbacks(
+        @Query("espaco_id") espacoId: Int
+    ): Call<List<Feedback>>
+
 }

@@ -14,15 +14,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import android.widget.Toast
 import com.example.myapplication.ApiService
-import com.example.myapplication.EspacosAdapter.ViewHolder
 
-class HomeAdapter(private val dataset:List<Espaco>, private val apiService: ApiService, ):
+
+class HomeAdapter(private var dataset:List<Espaco>, private val apiService: ApiService, ):
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nome: TextView = view.findViewById(R.id.nomeEspaco)
         val endereco: TextView = view.findViewById(R.id.enderecoEspaco)
-        val cep: TextView = view.findViewById(R.id.cepEspaco)
         val imagem: ImageView = view.findViewById(R.id.imagemEspaco)
 
         val saibaMaisButton: Button = view.findViewById(R.id.btnVerDetalhes)
@@ -36,10 +35,9 @@ class HomeAdapter(private val dataset:List<Espaco>, private val apiService: ApiS
     }
 
     override fun onBindViewHolder(viewHolder: HomeAdapter.ViewHolder, position: Int) {
-        val espaco = dataset[position]
+        var espaco = dataset[position]
         viewHolder.nome.text = espaco.nome ?: "Nome Não Informado"
         viewHolder.endereco.text = espaco.endereco ?: "Endereço Não Informado"
-        viewHolder.cep.text = espaco.cep ?: ""
         Picasso.get().load(espaco.imagemUrl).into(viewHolder.imagem)
 
         // Passar os dados do produto para a Activity de ediÃƒÂ§ÃƒÂ£o
@@ -56,5 +54,10 @@ class HomeAdapter(private val dataset:List<Espaco>, private val apiService: ApiS
         }
     }
     override fun getItemCount() = dataset.size
+
+    fun updateData(novaLista: List<Espaco>) {
+        dataset = novaLista
+        notifyDataSetChanged() // <-- Comando MÁGICO que força o RecyclerView a redesenhar
+    }
 
 }

@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Sampa Play</string>
+
+    <string name="login_title">Ingresar</string>
+    <string name="login_email_hint">Escriba su email</string>
+    <string name="login_password_hint">Escriba su contraseña</string>
+    <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login_button">Acceder</string>
+    <string name="login_no_account">¿No tienes una cuenta? Regístrate</string>
+
+    <string name="register_title">Nuevo Usuario</string>
+    <string name="register_name_hint">Escriba su nombre completo</string>
+    <string name="register_button">Registrar</string>
+    <string name="register_has_account">¿Ya tienes una cuenta? Ingresar</string>
+
+    <string name="home_title">Catálogo de Canchas</string>
+    <string name="card_details_button">Saber Más</string>
+    <string name="card_delete_button">Borrar</string>
+    <string name="card_edit_button">Editar</string>
+    <string name="default_name">Nombre No Informado</string>
+    <string name="default_address">Dirección No Informada</string>
+    <string name="default_category">Tipo: N/A</string>
+
+    <string name="search_title">Filtrar y Buscar Canchas</string>
+    <string name="search_hint">Buscar por Nombre o Dirección</string>
+    <string name="search_label_type">1. Tipo de Deporte:</string>
+    <string name="search_button_apply">Aplicar Filtros</string>
+    <string name="search_results_title">Resultados de la Búsqueda:</string>
+
+    <string name="details_title">Detalles del Espacio</string>
+    <string name="details_location_label">Ubicación Completa</string>
+    <string name="details_button_maps">Abrir en Google Maps</string>
+    <string name="details_button_whatsapp">Invitar Amigos por WhatsApp</string>
+
+    <string name="feedback_form_title">Deja tu Opinión</string>
+    <string name="feedback_condition_label">¿Cuál es la condición actual?</string>
+    <string name="feedback_condition_good">Buena (Lista para usar)</string>
+    <string name="feedback_condition_fair">Regular (Necesita reparaciones)</string>
+    <string name="feedback_condition_bad">Mala / Insegura</string>
+    <string name="feedback_observation_hint">Escribe tu observación (opcional)...</string>
+    <string name="feedback_button_send">Enviar Opinión</string>
+    <string name="feedback_list_title">Opiniones de la Comunidad</string>
+
+    <string name="about_title">Sobre Sampa Play</string>
+    <string name="about_description">Sampa Play es tu aplicación definitiva para encontrar áreas públicas...</string>
+    <string name="about_project_data">Datos del Proyecto</string>
+    <string name="about_developer">Desarrollador: Pedro Henrique de Lima Simões Magro</string>
+    <string name="about_discipline">Disciplina: Programación Orientada a Dispositivos Móviles</string>
+    <string name="about_coordinator">Tutor: Mauricio Ferraz Kubo</string>
+    <string name="about_contacts_links">Contactos y Enlaces</string>
+    <string name="about_contact_email">Email de Contacto</string>
+    <string name="about_contact_linkedin">LinkedIn</string>
+
+    <string name="toast_register_success">¡Usuario registrado con éxito!</string>
+    <string name="toast_register_fail">Error al registrar. Inténtelo de nuevo.</string>
+    <string name="toast_update_success">¡Espacio actualizado con éxito!</string>
+    <string name="toast_update_fail">Error en la actualización</string>
+    <string name="toast_delete_success">¡Espacio borrado con éxito!</string>
+    <string name="toast_delete_fail">Error al borrar el espacio</string>
+    <string name="toast_feedback_success">¡Opinión enviada con éxito!</string>
+    <string name="toast_feedback_fail">Error al enviar. Inténtelo de nuevo.</string>
+    <string name="toast_search_no_results">No se encontraron resultados</string>
+    <string name="toast_connection_fail">Falla de conexión</string>
+
+</resources>

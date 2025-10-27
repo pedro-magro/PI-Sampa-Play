@@ -37,7 +37,7 @@
             android:name=".EspacosActivity"
             android:exported="false" /> <!-- Habilitando ClearText -->
         <activity
-            android:name=".MainActivity2"
+            android:name=".EspaçosHomeActivity"
             android:exported="false" />
         <activity
             android:name=".ItemDetalheActivity"

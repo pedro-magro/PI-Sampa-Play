@@ -1,15 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sampa Play</string>
 
-    <!-- Adicione este array para o filtro do Spinner -->
-    <string-array name="tipos_esporte_array">
-        <item>Selecione o Tipo</item>
-        <item>Futebol de Campo</item>
-        <item>Futebol de Salão</item>
-        <item>Basquete</item>
-        <item>Vôlei</item>
-        <item>Tênis</item>
-        <item>Academia ao Ar Livre</item>
-    </string-array>
+    <string name="login_title">Entrar</string>
+    <string name="login_email_hint">Digite seu email</string>
+    <string name="login_password_hint">Digite sua senha</string>
+    <string name="login_forgot_password">Esqueceu a senha?</string>
+    <string name="login_button">Acessar</string>
+    <string name="login_no_account">Ainda não possui uma conta? Cadastre-se</string>
+
+    <string name="register_title">Novo Usuário</string>
+    <string name="register_name_hint">Digite seu nome completo</string>
+    <string name="register_button">Cadastrar</string>
+    <string name="register_has_account">Já possui uma conta? Faça o login</string>
+
+    <string name="home_title">Catálogo de Quadras</string>
+    <string name="card_details_button">Saiba Mais</string>
+    <string name="card_delete_button">Deletar</string>
+    <string name="card_edit_button">Editar</string>
+    <string name="default_name">Nome Não Informado</string>
+    <string name="default_address">Endereço Não Informado</string>
+    <string name="default_category">Tipo: N/A</string>
+
+    <string name="search_title">Filtrar e Buscar Quadras</string>
+    <string name="search_hint">Buscar por Nome ou Endereço</string>
+    <string name="search_label_type">1. Tipo de Esporte:</string>
+    <string name="search_button_apply">Aplicar Filtros</string>
+    <string name="search_results_title">Resultados da Busca:</string>
+
+    <string name="details_title">Detalhes do Espaço</string>
+    <string name="details_location_label">Localização Completa</string>
+    <string name="details_button_maps">Abrir no Google Maps</string>
+    <string name="details_button_whatsapp">Convidar Amigos via WhatsApp</string>
+
+    <string name="feedback_form_title">Deixe seu Feedback</string>
+    <string name="feedback_condition_label">Qual a condição atual?</string>
+    <string name="feedback_condition_good">Boa (Pronta para uso)</string>
+    <string name="feedback_condition_fair">Razoável (Precisa de reparos)</string>
+    <string name="feedback_condition_bad">Ruim / Insegura</string>
+    <string name="feedback_observation_hint">Escreva sua observação (opcional)...</string>
+    <string name="feedback_button_send">Enviar Feedback</string>
+    <string name="feedback_list_title">Feedbacks da Comunidade</string>
+
+    <string name="about_title">Sobre Sampa Play</string>
+    <string name="about_description">O Sampa Play é o seu aplicativo definitivo para encontrar áreas públicas...</string>
+    <string name="about_project_data">Dados do Projeto</string>
+    <string name="about_developer">Desenvolvedor: Pedro Henrique de Lima Simões Magro</string>
+    <string name="about_discipline">Disciplina: Programação Orientada a Dispositivos Móveis</string>
+    <string name="about_coordinator">Orientador: Mauricio Ferraz Kubo</string>
+    <string name="about_contacts_links">Contatos e Links</string>
+    <string name="about_contact_email">E-mail para Contato</string>
+    <string name="about_contact_linkedin">LinkedIn</string>
+
+    <string name="toast_register_success">Usuário cadastrado com sucesso!</string>
+    <string name="toast_register_fail">Erro ao cadastrar. Tente novamente.</string>
+    <string name="toast_update_success">Espaço atualizado com sucesso!</string>
+    <string name="toast_update_fail">Erro na atualização</string>
+    <string name="toast_delete_success">Espaço deletado com sucesso!</string>
+    <string name="toast_delete_fail">Erro ao deletar o espaço</string>
+    <string name="toast_feedback_success">Feedback enviado com sucesso!</string>
+    <string name="toast_feedback_fail">Erro ao enviar. Tente novamente.</string>
+    <string name="toast_search_no_results">Nenhum resultado encontrado</string>
+    <string name="toast_connection_fail">Falha de conexão</string>
+
 </resources>
