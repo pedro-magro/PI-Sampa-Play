@@ -15,6 +15,7 @@ import com.example.myapplication.Espaco
 
 class EditarEspacoActivity : BaseActivity() {
 
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var nomeEditText: EditText
     private lateinit var enderecoEditText: EditText
     private lateinit var cepEditText: EditText
@@ -32,6 +33,11 @@ class EditarEspacoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_espaco)
+
+        toolbar = findViewById(R.id.toolbarEditarEspaco)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         // ... (Inicialização dos Componentes OK) ...
         nomeEditText = findViewById(R.id.nomeEditText)
@@ -110,5 +116,9 @@ class EditarEspacoActivity : BaseActivity() {
                 }
             })
         }
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        finish() // Fecha esta Activity e volta para a tela anterior
+        return true
     }
 }

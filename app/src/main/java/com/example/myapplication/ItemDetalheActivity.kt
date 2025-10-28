@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,10 +23,13 @@ import com.example.myapplication.Feedback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ItemDetalheActivity : BaseActivity() {
+class ItemDetalheActivity : AppCompatActivity() {
 
 
 //inicializando antecipadamente as variaveis dos elementos graficos.
+
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+
     private lateinit var imageImageView: ImageView
     private lateinit var nomeTextView: TextView
     private lateinit var enderecoCompletoTextView : TextView
@@ -49,8 +53,10 @@ class ItemDetalheActivity : BaseActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_item_detalhe)
 
-        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        setupBottomNavigation(navView, R.id.nav_home)
+        toolbar = findViewById(R.id.toolbarDetalhe)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         //atribuindo as variaveis os elementos gráficos.
         imageImageView = findViewById(R.id.imgDetalheEspaco)
@@ -84,7 +90,13 @@ class ItemDetalheActivity : BaseActivity() {
             val mapUri = "google.navigation:q=$address"
             val mapintent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUri))
             mapintent.setPackage("com.google.android.apps.maps")
-            startActivity(mapintent)
+            if (mapintent.resolveActivity(packageManager) != null) {
+                startActivity(mapintent)
+            } else {
+                // Se não tiver o Maps, tenta abrir no navegador
+                val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://maps.google.com/maps?q=$address"))
+                startActivity(webIntent)
+            }
         }
         whatsappButton.setOnClickListener {
             val addres = enderecoCompletoTextView.text.toString()
@@ -93,7 +105,12 @@ class ItemDetalheActivity : BaseActivity() {
             intent.type = "text/plain"
             intent.setPackage("com.whatsapp")
             intent.putExtra(Intent.EXTRA_TEXT, textMessage)
-            startActivity(intent)
+
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "WhatsApp não instalado.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnEnviarFeedback = findViewById(R.id.btnEnviarFeedback)
@@ -164,6 +181,11 @@ class ItemDetalheActivity : BaseActivity() {
 
         }
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish() // Fecha esta Activity e volta para a tela anterior
+        return true
     }
     private fun loadFeedbacks() {
         apiService.getFeedbacks(espacoId).enqueue(object : Callback<List<Feedback>> {

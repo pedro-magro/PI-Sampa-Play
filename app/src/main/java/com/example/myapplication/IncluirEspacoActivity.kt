@@ -22,6 +22,8 @@ import java.time.format.DateTimeFormatter
 
 class IncluirEspacoActivity : BaseActivity() {
 
+    private lateinit var toolbar : androidx.appcompat.widget.Toolbar
+
     private lateinit var nomeEditText: EditText
     private lateinit var enderecoEditText: EditText
     private lateinit var cepEditText: EditText
@@ -40,6 +42,11 @@ class IncluirEspacoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_incluir_espaco)
+
+        toolbar = findViewById(R.id.toolbarIncluirEspaco)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
 
         nomeEditText = findViewById(R.id.nomeEditText)
@@ -90,6 +97,10 @@ class IncluirEspacoActivity : BaseActivity() {
                 }
             })
         }
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        finish() // Fecha esta Activity e volta para a tela anterior
+        return true
     }
     private fun loadCategoriasSpinner() {
         apiService.getCategorias().enqueue(object : Callback<List<Categoria>> {
