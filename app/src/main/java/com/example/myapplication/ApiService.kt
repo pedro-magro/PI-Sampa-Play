@@ -13,6 +13,9 @@ interface ApiService {
     @GET("listar.php")
     fun getEspacos(): Call<List<Espaco>>
 
+    @GET("listar_admin.php")
+    fun getEspacosAdmin(): Call<List<Espaco>>
+
     // MÃƒÂ©todo para incluir um espaco
     @FormUrlEncoded
     @POST("incluir_espaco.php")

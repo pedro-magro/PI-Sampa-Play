@@ -6,30 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".EspacosActivity">
 
-    <!-- BotÃƒÂ£o de Incluir Espaco -->
-    <Button
-        android:id="@+id/incluirEspacoButton"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/tvCrud"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="1dp"
-        android:text="Incluir Espaço"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewEspacos"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Painel de Admim"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#212121"
+        android:padding="16dp"
+        android:background="#F5F5F5"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:elevation="2dp"
+        android:contentDescription="Título da Tela de Admin"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewEspacos"
         android:layout_width="409dp"
         android:layout_height="0dp"
         android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/incluirEspacoButton" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCrud" />
+
+    <View
+        android:id="@+id/separator_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#DDDDDD" app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/incluirEspacoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_white_24dp"
+        app:backgroundTint="#D50000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/separator_line"
+        android:contentDescription="Botão para incluir novo espaço"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

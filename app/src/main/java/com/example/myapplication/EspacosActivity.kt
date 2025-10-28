@@ -18,12 +18,13 @@ import retrofit2.http.GET
 import java.util.concurrent.TimeUnit
 import com.example.myapplication.ApiService
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class EspacosActivity : BaseActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: EspacosAdapter
-    private lateinit var addEspacoButton: Button  // BotÃƒÂ£o de Adicionar Produto
+    private lateinit var addEspacoButton: FloatingActionButton  // BotÃƒÂ£o de Adicionar Produto
 
     private lateinit var apiService: ApiService
 
@@ -64,7 +65,7 @@ class EspacosActivity : BaseActivity() {
             .build()
 
         apiService = retrofit.create(ApiService::class.java)
-        apiService.getEspacos().enqueue(object : Callback<List<Espaco>> {
+        apiService.getEspacosAdmin().enqueue(object : Callback<List<Espaco>> {
             override fun onResponse(call: Call<List<Espaco>>, response: Response<List<Espaco>>) {
                 if (response.isSuccessful) {
                     val espacos = response.body() ?: emptyList()
