@@ -19,6 +19,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import com.example.myapplication.Feedback
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ItemDetalheActivity : BaseActivity() {
@@ -47,6 +48,9 @@ class ItemDetalheActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_item_detalhe)
+
+        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        setupBottomNavigation(navView, R.id.nav_home)
 
         //atribuindo as variaveis os elementos gráficos.
         imageImageView = findViewById(R.id.imgDetalheEspaco)
@@ -162,18 +166,28 @@ class ItemDetalheActivity : BaseActivity() {
 
     }
     private fun loadFeedbacks() {
-        // (Implemente a chamada apiService.getFeedbacks(espacoId) aqui)
         apiService.getFeedbacks(espacoId).enqueue(object : Callback<List<Feedback>> {
             override fun onResponse(call: Call<List<Feedback>>, response: Response<List<Feedback>>) {
-                val feedbacks = response.body() ?: emptyList()
-                feedbackAdapter = FeedbackAdapter(feedbacks)
-                rvFeedback.adapter = feedbackAdapter
+                if (response.isSuccessful) {
+                    val feedbacks = response.body() ?: emptyList()
+
+                    // CORREÇÃO VISUAL: Se a lista estiver vazia, não atribua o adapter
+                    if (feedbacks.isNotEmpty()) {
+                        feedbackAdapter = FeedbackAdapter(feedbacks)
+                        rvFeedback.adapter = feedbackAdapter
+                    }
+                } else {
+                    // Trata erro HTTP
+                    Toast.makeText(this@ItemDetalheActivity, "Erro ao carregar lista (${response.code()})", Toast.LENGTH_SHORT).show()
+                }
             }
 
-            override fun onFailure(call: Call<List<Feedback>?>, t: Throwable) {
+            // CORREÇÃO: Removida a nulidade do tipo Call<>
+            override fun onFailure(call: Call<List<Feedback>>, t: Throwable) {
                 Toast.makeText(this@ItemDetalheActivity, "Falha de conexão: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+
         // ...
         // No onResponse:
         // val feedbacks = response.body() ?: emptyList()

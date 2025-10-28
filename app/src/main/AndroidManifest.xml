@@ -43,7 +43,7 @@
             android:name=".ItemDetalheActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".PerfilActivity"
             android:exported="false" />
         <activity
             android:name=".CadastroActivity"

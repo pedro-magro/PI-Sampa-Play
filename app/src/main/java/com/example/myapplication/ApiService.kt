@@ -21,7 +21,8 @@ interface ApiService {
         @Field("ESPACO_ENDERECO") endereco: String,
         @Field("ESPACO_CEP") cep: String?,
         @Field("ESPACO_IMG") imgUrl: String?,
-        @Field("CATEGORIA_ID")  categoriaId: Int
+        @Field("CATEGORIA_ID")  categoriaId: Int,
+        @Field("ESPACO_APROVADO") aprovado: Int
     ): Call<Void>
 
     // MÃƒÂ©todo para editar um espaco
@@ -69,7 +70,7 @@ interface ApiService {
         @Field("ESPACO_ID") espacoId: Int,
         @Field("USUARIO_ID") usuarioId: Int,
         @Field("CONDICAO_ID") condicaoId: Int,
-        @Field("FEEDBACK_OBSERVACAO") feedbackObservacao: String
+        @Field("FEEDBACK_OBS") feedbackObservacao: String
     ): Call<Void>
 
     @GET("feedbacks.php")

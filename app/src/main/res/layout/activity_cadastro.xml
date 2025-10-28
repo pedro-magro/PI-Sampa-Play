@@ -55,8 +55,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:backgroundTint="@color/sampa_red_destaque"
+        android:color="@color/sampa_red_destaque"
+        android:contentDescription="Botão para confirmar o cadastro"
         android:text="Cadastrar"
-        android:contentDescription="Botão para confirmar o cadastro" />
+        android:textColor="@android:color/white" />
 
     <!-- Link para Login -->
     <TextView
@@ -66,6 +69,6 @@
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:text="Já tem uma conta? Faça o Login"
-        android:textColor="#D50000" />
+        android:textColor="@android:color/black" />
 
 </LinearLayout>

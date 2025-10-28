@@ -33,12 +33,12 @@ class FeedbackAdapter(private val dataset: List<Feedback>) :
         val context = holder.itemView.context
 
         // 1. Preenche os dados de texto
-        holder.tvStatus.text = feedback.condicaoNome
+        holder.tvStatus.text = feedback.condicaoNome ?: "N:A"
         holder.tvObservacao.text = feedback.observacao ?: "" // Usa string vazia se a observação for nula
         holder.tvData.text = feedback.dataEnvio
 
         // 2. Lógica para definir o ícone e a cor (baseado no mockup da direita)
-        when (feedback.condicaoNome.lowercase()) {
+        when (feedback.condicaoNome?.lowercase()) {
             "boa" -> {
                 holder.ivIcon.setImageResource(R.drawable.ic_check_24) // Ícone de Check
                 // Tenta usar a cor da API, senão usa um verde padrão
