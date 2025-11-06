@@ -16,37 +16,37 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".HomeActivity"
+            android:name=".activities.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".BuscaActivity"
+            android:name=".activities.BuscaActivity"
             android:exported="false" />
         <activity
-            android:name=".SobreNosActivity"
+            android:name=".activities.SobreNosActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".IncluirEspacoActivity"
+            android:name=".activities.IncluirEspacoActivity"
             android:exported="false" />
         <activity
-            android:name=".EditarEspacoActivity"
+            android:name=".activities.EditarEspacoActivity"
             android:exported="false" />
         <activity
-            android:name=".EspacosActivity"
+            android:name=".activities.EspacosActivity"
             android:exported="false" /> <!-- Habilitando ClearText -->
         <activity
-            android:name=".EspaçosHomeActivity"
+            android:name=".activities.EspaçosHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".ItemDetalheActivity"
+            android:name=".activities.ItemDetalheActivity"
             android:exported="false" />
         <activity
-            android:name=".PerfilActivity"
+            android:name=".activities.PerfilActivity"
             android:exported="false" />
         <activity
-            android:name=".CadastroActivity"
+            android:name=".activities.CadastroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

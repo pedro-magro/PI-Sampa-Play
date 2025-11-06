@@ -1,10 +1,10 @@
-package com.example.myapplication
+package com.example.myapplication.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import okhttp3.OkHttpClient
@@ -14,17 +14,21 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 import java.util.concurrent.TimeUnit
-import com.example.myapplication.ApiService
+import com.example.myapplication.remote.ApiService
+import com.example.myapplication.data.Espaco
+import com.example.myapplication.adapters.EspacoAdapterListener
+import com.example.myapplication.adapters.EspacosAdapter
+import com.example.myapplication.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class EspacosActivity : BaseActivity() {
+class EspacosActivity : BaseActivity(), EspacoAdapterListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: EspacosAdapter
     private lateinit var addEspacoButton: FloatingActionButton  // BotÃƒÂ£o de Adicionar Produto
+    private lateinit var tvVazio: TextView
 
     private lateinit var apiService: ApiService
 
@@ -40,6 +44,8 @@ class EspacosActivity : BaseActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         addEspacoButton = findViewById(R.id.incluirEspacoButton) //inicializando o botão
+        tvVazio = findViewById<TextView>(R.id.tvVazio)
+
 
 
         // ConfiguraÇÃo do Logging Interceptor
@@ -71,7 +77,8 @@ class EspacosActivity : BaseActivity() {
                     val espacos = response.body() ?: emptyList()
                     adapter = EspacosAdapter(
                         espacos,
-                        apiService = apiService
+                        apiService = apiService,
+                        this@EspacosActivity
                     )
                     recyclerView.adapter = adapter
                 } else {
@@ -95,22 +102,26 @@ class EspacosActivity : BaseActivity() {
         loadEspacos()
     }
     private fun loadEspacos() {
-        apiService.getEspacos().enqueue(object : Callback<List<Espaco>> {
+        apiService.getEspacosAdmin().enqueue(object : Callback<List<Espaco>> {
             override fun onResponse(call: Call<List<Espaco>>, response: Response<List<Espaco>>) {
                 if (response.isSuccessful) {
                     val espacos = response.body() ?: emptyList()
+                    if(espacos.isEmpty()){
+                        recyclerView.visibility = View.GONE
+                        tvVazio.visibility = View.VISIBLE
+                    }else{
+                        recyclerView.visibility = View.VISIBLE
+                        tvVazio.visibility = View.GONE
+                    }
                     // Reutiliza o adapter (se já existir) ou cria um novo
                     if (::adapter.isInitialized) {
                         // Se o adapter já existe, só atualiza os dados
-                        // (Você precisará implementar o método updateData no seu adapter)
-                        // adapter.updateData(espacos)
 
-                        // OU (A forma mais simples para seu MVP):
-                        adapter = EspacosAdapter(espacos, apiService)
+                        adapter = EspacosAdapter(espacos, apiService, this@EspacosActivity)
                         recyclerView.adapter = adapter
                     } else {
                         // Se for a primeira vez, cria o adapter
-                        adapter = EspacosAdapter(espacos, apiService)
+                        adapter = EspacosAdapter(espacos, apiService, this@EspacosActivity)
                         recyclerView.adapter = adapter
                     }
                 } else {
@@ -121,5 +132,9 @@ class EspacosActivity : BaseActivity() {
                 Log.e("API Failure", "Error fetching products", t)
             }
         })
+    }
+
+    override fun onItemDeleted() {
+        loadEspacos()
     }
 }

@@ -21,7 +21,7 @@
             android:id="@+id/imagemEspaco"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:contentDescription="Imagem da quadra"
+            android:contentDescription="Imagem do espaço"
             android:scaleType="centerCrop" />
 
         <LinearLayout
@@ -70,6 +70,7 @@
             android:layout_marginEnd="8dp"
             android:backgroundTint="#D50000"
             android:text="Saiba Mais"
+            android:contentDescription="Botão para ver detalhes do espaço"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

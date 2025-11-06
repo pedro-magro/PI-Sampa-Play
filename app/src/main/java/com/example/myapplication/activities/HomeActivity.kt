@@ -1,16 +1,18 @@
-package com.example.myapplication
+package com.example.myapplication.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
+import android.view.View
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.ApiService
+import com.example.myapplication.remote.ApiService
+import com.example.myapplication.data.Espaco
+import com.example.myapplication.adapters.HomeAdapter
+import com.example.myapplication.R
+import com.example.myapplication.util.SessionManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import okhttp3.OkHttpClient
@@ -31,6 +33,7 @@ private lateinit var adapter: HomeAdapter
 private lateinit var addEspacoButton: FloatingActionButton
 
 
+
 class HomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +47,10 @@ class HomeActivity : BaseActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         addEspacoButton = findViewById(R.id.incluirEspacoButton)
+        val tvVazio = findViewById<TextView>(R.id.tvVazio)
 
 
+        val zonaIdUsuario = SessionManager.getUserZonaId(this)
         val logging = HttpLoggingInterceptor { message ->
             Log.d("OkHttp", message)
         }.apply {
@@ -67,10 +72,18 @@ class HomeActivity : BaseActivity() {
             .build()
 
         apiService = retrofit.create(ApiService::class.java)
-        apiService.getEspacos().enqueue(object : Callback<List<Espaco>> {
+        apiService.getEspacos(zonaIdUsuario).enqueue(object : Callback<List<Espaco>> {
             override fun onResponse(call: Call<List<Espaco>>, response: Response<List<Espaco>>) {
                 if (response.isSuccessful) {
                     val espacos = response.body() ?: emptyList()
+
+                    if(espacos.isEmpty()){
+                        tvVazio.visibility = View.VISIBLE
+                        recyclerView.visibility = View.GONE
+                    }else{
+                        tvVazio.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                    }
                     adapter = HomeAdapter(
                         espacos,
                         apiService = apiService

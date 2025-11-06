@@ -1,21 +1,21 @@
-package com.example.myapplication
+package com.example.myapplication.activities
 
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.example.myapplication.ApiService
-import com.example.myapplication.Espaco
+import com.example.myapplication.remote.ApiService
+import com.example.myapplication.R
 
 class EditarEspacoActivity : BaseActivity() {
 
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var toolbar: Toolbar
     private lateinit var nomeEditText: EditText
     private lateinit var enderecoEditText: EditText
     private lateinit var cepEditText: EditText

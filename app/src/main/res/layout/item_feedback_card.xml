@@ -22,10 +22,11 @@
         <ImageView
             android:id="@+id/ivFeedbackIcon"
             android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_height="22dp"
             android:layout_marginEnd="8dp"
             app:tint="#D50000"
-            tools:src="@drawable/ic_feedback_ruim_24dp" />
+            tools:src="@drawable/ic_feedback_ruim_24dp"
+            android:contentDescription="icone da condição"/>
 
         <TextView
             android:id="@+id/tvFeedbackStatus"
@@ -59,6 +60,7 @@
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:layout_marginEnd="4dp"
+            android:contentDescription="Icone de calendario"
             app:tint="#757575"
             android:src="@drawable/ic_calendar_black_24dp" />
 

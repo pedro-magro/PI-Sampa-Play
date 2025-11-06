@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.adapters
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,12 +8,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.R
 import com.squareup.picasso.Picasso
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import android.widget.Toast
-import com.example.myapplication.ApiService
+import com.example.myapplication.activities.ItemDetalheActivity
+import com.example.myapplication.data.Espaco
+import com.example.myapplication.remote.ApiService
 
 
 class HomeAdapter(private var dataset:List<Espaco>, private val apiService: ApiService, ):
@@ -27,14 +26,14 @@ class HomeAdapter(private var dataset:List<Espaco>, private val apiService: ApiS
         val saibaMaisButton: Button = view.findViewById(R.id.btnVerDetalhes)
 
     }
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): HomeAdapter.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.home_view_holder, viewGroup, false)
 
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: HomeAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         var espaco = dataset[position]
         viewHolder.nome.text = espaco.nome ?: "Nome Não Informado"
         viewHolder.endereco.text = espaco.endereco ?: "Endereço Não Informado"
@@ -43,13 +42,8 @@ class HomeAdapter(private var dataset:List<Espaco>, private val apiService: ApiS
         // Passar os dados do produto para a Activity de ediÃƒÂ§ÃƒÂ£o
         viewHolder.saibaMaisButton.setOnClickListener {
             val intent = Intent(it.context, ItemDetalheActivity::class.java)
-            intent.putExtra("ESPACO_ID", espaco.id)
-            intent.putExtra("ESPACO_NOME", espaco.nome)
-            intent.putExtra("ESPACO_ENDERECO", espaco.endereco)
-            intent.putExtra("ESPACO_CEP", espaco.cep)
-            intent.putExtra("ESPACO_IMG", espaco.imagemUrl)
-            intent.putExtra("ESPACO_CATEGORIA", espaco.categoriaNome)
-            intent.putExtra("ESPACO_DATA", espaco.ESPACO_DATA)
+            val espaco = dataset[position]
+            intent.putExtra("ESPACO_OBJETO", espaco)
             it.context.startActivity(intent)
         }
     }

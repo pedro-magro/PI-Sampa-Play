@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.activities
 
 import android.os.Build
 import android.os.Bundle
@@ -11,18 +11,20 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.example.myapplication.remote.ApiService
+import com.example.myapplication.data.Categoria
+import com.example.myapplication.R
+import com.example.myapplication.data.Zona
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class IncluirEspacoActivity : BaseActivity() {
 
-    private lateinit var toolbar : androidx.appcompat.widget.Toolbar
+    private lateinit var toolbar : Toolbar
 
     private lateinit var nomeEditText: EditText
     private lateinit var enderecoEditText: EditText
@@ -35,6 +37,8 @@ class IncluirEspacoActivity : BaseActivity() {
     private lateinit var apiService: ApiService
 
     private var listaCategorias = listOf<Categoria>()
+    private lateinit var spinnerZona: Spinner
+    private var listaZonas = listOf<Zona>()
 
     private var categoriaSelecionadaId: Int = 0
 
@@ -55,6 +59,8 @@ class IncluirEspacoActivity : BaseActivity() {
         imagemEditText = findViewById(R.id.imagemEditText)
         spCategoira = findViewById(R.id.spinnerCategoria)
         salvarButton = findViewById(R.id.salvarButton)
+        spinnerZona = findViewById(R.id.spinnerZona)
+
 
         val aprovacao: Int = 0
 
@@ -66,14 +72,17 @@ class IncluirEspacoActivity : BaseActivity() {
 
         apiService = retrofit.create(ApiService::class.java)
         loadCategoriasSpinner()
+        loadZonas()
 
         // LÃƒÂ³gica do BotÃƒÂ£o de Incluir
 
         salvarButton.setOnClickListener {
-            // Fazer a requisiÃƒÂ§ÃƒÂ£o para incluir o produto
+            // Faz a requisição para incluir o espaco
             val aprovacao = intent.getIntExtra("STATUS_APROVACAO",0)
             val cep = cepEditText.text.toString().let { if (it.isEmpty()) null else it }
             val imagem = imagemEditText.text.toString().let { if (it.isEmpty()) null else it }
+            val zonaSelecionada = spinnerZona.selectedItem as Zona
+            val zonaIdParaEnviar = zonaSelecionada.id
 
             apiService.incluirEspaco(
                 nomeEditText.text.toString(),
@@ -81,7 +90,8 @@ class IncluirEspacoActivity : BaseActivity() {
                 cep,
                 imagem,
                 categoriaId = categoriaSelecionadaId,
-                aprovado = aprovacao
+                aprovado = aprovacao,
+                zonaIdParaEnviar
             ).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
@@ -136,6 +146,25 @@ class IncluirEspacoActivity : BaseActivity() {
             }
             override fun onFailure(call: Call<List<Categoria>>, t: Throwable) {
                 Log.e("API_CATEGORIA", "Falha: ${t.message}")
+            }
+        })
+    }
+    private fun loadZonas() {
+        apiService.getZonas().enqueue(object : Callback<List<Zona>> {
+            override fun onResponse(call: Call<List<Zona>>, response: Response<List<Zona>>) {
+                if (response.isSuccessful) {
+                    listaZonas = response.body() ?: emptyList()
+
+                    // Configura o adapter do Spinner
+                    val adapter = ArrayAdapter(this@IncluirEspacoActivity,
+                        android.R.layout.simple_spinner_item,
+                        listaZonas)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerZona.adapter = adapter
+                }
+            }
+            override fun onFailure(call: Call<List<Zona>>, t: Throwable) {
+                Toast.makeText(this@IncluirEspacoActivity, "Falha ao carregar zonas", Toast.LENGTH_SHORT).show()
             }
         })
     }

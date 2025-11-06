@@ -17,6 +17,17 @@
         android:textColor="#212121"
         android:contentDescription="Título da tela de cadastro de novo usuário" />
 
+    <ImageView
+        android:id="@+id/imgLogoLogin"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="32dp"
+        android:contentDescription="Logotipo Sampa Play"
+
+        android:src="@drawable/logo"
+
+        android:layout_gravity="center_horizontal" />
+
     <!-- Campo Nome Completo -->
     <EditText
         android:id="@+id/nameEditText"
@@ -48,6 +59,12 @@
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:contentDescription="Campo para digitar a senha" />
+
+    <Spinner
+        android:id="@+id/spinnerZona"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:contentDescription="Seletor de zona" />
 
     <!-- Botão de Ação -->
     <Button

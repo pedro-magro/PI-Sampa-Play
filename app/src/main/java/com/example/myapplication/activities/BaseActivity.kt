@@ -1,8 +1,9 @@
-package com.example.myapplication
+package com.example.myapplication.activities
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /**
@@ -52,8 +53,8 @@ open class BaseActivity : AppCompatActivity() {
                     finish()
                 }
                 R.id.nav_profile -> {
-                    // startActivity(Intent(this, PerfilActivity::class.java))
-                    // finish()
+                    startActivity(Intent(this, PerfilActivity::class.java))
+                    finish()
                 }
             }
             true

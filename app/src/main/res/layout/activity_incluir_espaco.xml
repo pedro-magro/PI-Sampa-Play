@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IncluirEspacoActivity">
+    tools:context=".activities.IncluirEspacoActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarIncluirEspaco"
@@ -71,15 +71,26 @@
         android:contentDescription="Lista suspensa para selecionar a categoria"
         app:layout_constraintTop_toBottomOf="@+id/imagemEditText" />
 
+    <Spinner
+        android:id="@+id/spinnerZona"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/spinnerCategoria"
+        android:contentDescription="Seletor de zona" />
+
     <!-- BotÃƒÂ£o para Incluir Novo Espaco -->
+
     <Button
         android:id="@+id/salvarButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/sampa_red_destaque"
         android:text="Incluir Novo Espaco"
+        android:contentDescription="Botão para incluir novo espaço"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoria" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerZona" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

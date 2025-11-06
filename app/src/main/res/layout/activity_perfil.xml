@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".PerfilActivity">
+    tools:context=".activities.PerfilActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarPerfil"
@@ -23,6 +23,7 @@
         android:layout_height="100dp"
         android:layout_marginTop="32dp"
         android:src="@drawable/ic_person_black_24dp"
+        android:contentDescription="Icone de Perfil"
         app:layout_constraintTop_toBottomOf="@id/toolbarPerfil"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,12 +58,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
+        android:contentDescription="Botão para sair deslogar"
         android:text="Sair (Logout)"
         android:backgroundTint="#D50000"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/separator_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#DDDDDD" app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

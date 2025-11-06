@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".ItemDetalheActivity">
+    tools:context=".activities.ItemDetalheActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarDetalhe"
@@ -74,11 +74,24 @@
                 tools:text="Av. Pedro Álvares Cabral, 0 - Moema, São Paulo - SP, 04000-000"
                 android:textColor="#212121"
                 android:layout_marginBottom="24dp"/>
+
+            <TextView
+                android:id="@+id/tvCondicaoGeral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintTop_toBottomOf="@id/tvDetalheEndereco" tools:text="Condição: Ótima" />
+
             <Button
                 android:id="@+id/btnAbrirMaps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Abrir no Google Maps"
+                android:contentDescription="Botão para abrir o maps"
                 android:backgroundTint="#03A9F4"
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="12dp"/>
@@ -87,6 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Convidar Amigos via WhatsApp"
+                android:contentDescription="Botão para convidar amigos via WhatsApp"
                 android:backgroundTint="#4CAF50"
                 android:textColor="@android:color/white"/>
 
@@ -148,6 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Enviar Feedback"
+                android:contentDescription="Botão para enviar feedback"
                 android:backgroundTint="#D50000"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="16dp"
@@ -163,6 +178,20 @@
                 android:textColor="#212121"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvFeedbackVazio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Seja o primeiro a enviar um feedback!"
+                android:textSize="16sp"
+                android:textColor="@color/sampa_cinza_texto"
+                android:layout_marginTop="24dp"
+                android:visibility="gone" app:layout_constraintTop_toBottomOf="@id/rvFeedback"
+                android:layout_gravity="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvFeedback"

@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.R
+import com.example.myapplication.data.Feedback
 
 class FeedbackAdapter(private val dataset: List<Feedback>) :
     RecyclerView.Adapter<FeedbackAdapter.ViewHolder>() {
@@ -37,20 +39,20 @@ class FeedbackAdapter(private val dataset: List<Feedback>) :
         holder.tvObservacao.text = feedback.observacao ?: "" // Usa string vazia se a observação for nula
         holder.tvData.text = feedback.dataEnvio
 
-        // 2. Lógica para definir o ícone e a cor (baseado no mockup da direita)
-        when (feedback.condicaoNome?.lowercase()) {
-            "boa" -> {
+        // 2. Lógica para definir o ícone e a cor
+        when (feedback.condicaoId) {
+            1 -> {
                 holder.ivIcon.setImageResource(R.drawable.ic_check_24) // Ícone de Check
                 // Tenta usar a cor da API, senão usa um verde padrão
                 val color = try { Color.parseColor(feedback.condicaoCor) } catch (e: Exception) { ContextCompat.getColor(context, R.color.feedback_bom) }
                 holder.ivIcon.setColorFilter(color)
             }
-            "razoável" -> {
+            2 -> {
                 holder.ivIcon.setImageResource(R.drawable.ic_feedback_ruim_24dp) // Ícone de Aviso
                 val color = try { Color.parseColor(feedback.condicaoCor) } catch (e: Exception) { ContextCompat.getColor(context, R.color.feedback_razoavel) }
                 holder.ivIcon.setColorFilter(color)
             }
-            "ruim/insegura", "ruim" -> {
+            3 -> {
                 holder.ivIcon.setImageResource(R.drawable.ic_error_24dp) // Ícone de Erro/Cancel
                 val color = try { Color.parseColor(feedback.condicaoCor) } catch (e: Exception) { ContextCompat.getColor(context, R.color.feedback_ruim) }
                 holder.ivIcon.setColorFilter(color)

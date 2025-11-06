@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.adapters
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -13,10 +13,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.widget.Toast
-import com.example.myapplication.ApiService
+import com.example.myapplication.R
+import com.example.myapplication.activities.EditarEspacoActivity
+import com.example.myapplication.data.Espaco
+import com.example.myapplication.remote.ApiService
 
+interface EspacoAdapterListener{
+     fun onItemDeleted()
+}
 
-class EspacosAdapter(private val dataset:List<Espaco>, private val apiService: ApiService, ):
+class EspacosAdapter(private val dataset:List<Espaco>, private val apiService: ApiService, private val listener: EspacoAdapterListener ):
     RecyclerView.Adapter<EspacosAdapter.ViewHolder>(){
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -65,6 +71,7 @@ class EspacosAdapter(private val dataset:List<Espaco>, private val apiService: A
                         "Espaco deletado com sucesso!",
                         Toast.LENGTH_LONG
                     ).show()
+                    listener.onItemDeleted()
                     }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {

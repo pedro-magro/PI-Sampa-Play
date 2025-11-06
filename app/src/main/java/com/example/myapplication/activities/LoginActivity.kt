@@ -1,8 +1,6 @@
-package com.example.myapplication
+package com.example.myapplication.activities
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -16,9 +14,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
-
+import com.example.myapplication.data.LoginResponse
+import com.example.myapplication.R
+import com.example.myapplication.util.SessionManager
 
 
 class LoginActivity : AppCompatActivity() {
@@ -69,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
         val call = apiService.login(email, password)
         call.enqueue(object : Callback<List<LoginResponse>> {
             override fun onResponse(call: Call<List<LoginResponse>>,
-            response: Response<List<LoginResponse>>
+                                    response: Response<List<LoginResponse>>
         ) {
             if (response.isSuccessful && response.body() != null) { val loginResponses = response.body()!!
                 if (loginResponses.isNotEmpty()) {
@@ -80,8 +78,8 @@ class LoginActivity : AppCompatActivity() {
                         val intent = Intent(this@LoginActivity, EspacosActivity::class.java)
                         startActivity(intent)
                     } else {
-                        // Usuário é Comum, vai para a tela de visualização
-                        // (Assumindo que sua tela comum se chama 'HomeActivity')
+                        // Usuário é Comum, vai para a tela de visualização de espaços
+                        SessionManager.salvarSessao(this@LoginActivity, usuario)
                         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                         startActivity(intent)
                     }
@@ -108,44 +106,5 @@ class LoginActivity : AppCompatActivity() {
             @Query("usuario") usuario: String,
             @Query("senha") senha: String
         ): Call<List<LoginResponse>>
-    }
-
-    object SessionManager {
-        private const val PREF_NAME = "SampaPlaySession"
-        private const val KEY_USER_ID = "USER_ID"
-        private const val KEY_USER_NOME = "USER_NOME"
-        private const val KEY_USER_EMAIL = "USER_EMAIL"
-        private const val KEY_USER_TIPO = "USER_TIPO"
-
-        private fun getEncryptedPrefs(context: Context): SharedPreferences {
-            val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-            return EncryptedSharedPreferences.create(
-                PREF_NAME,
-                masterKeyAlias,
-                context,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            )
-        }
-
-        // Salva todos os dados do usuário
-        fun salvarSessao(context: Context, usuario: LoginResponse) {
-            val editor = getEncryptedPrefs(context).edit()
-            editor.putInt(KEY_USER_ID, usuario.usuarioId)
-            editor.putString(KEY_USER_NOME, usuario.usuarioNome)
-            editor.putString(KEY_USER_EMAIL, usuario.usuarioEmail)
-            editor.putString(KEY_USER_TIPO, usuario.usuarioTipo) // Salva o TIPO
-            editor.apply()
-        }
-
-        fun getUserTipo(context: Context): String? {
-            return getEncryptedPrefs(context).getString(KEY_USER_TIPO, null)
-        }
-
-        fun getUserId(context: Context): Int {
-            return getEncryptedPrefs(context).getInt(KEY_USER_ID, 0)
-        }
-
-        // ... (outras funções de recuperação se necessário)
     }
 }
