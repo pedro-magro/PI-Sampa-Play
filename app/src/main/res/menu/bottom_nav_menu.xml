@@ -4,23 +4,23 @@
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_home_black_24dp"
         android:contentDescription="Icone de Home"
-        android:title="Home" />
+        android:title="@string/menu_home" />
 
     <item
         android:id="@+id/nav_search"
         android:icon="@drawable/ic_search_black_24dp"
         android:contentDescription="Icone de Busca"
-        android:title="Busca" />
+        android:title="@string/menu_search" />
 
     <item
         android:id="@+id/nav_contact"
         android:icon="@drawable/ic_mail_black_24dp"
         android:contentDescription="Icone de Contato"
-        android:title="Contato" />
+        android:title="@string/menu_about" />
 
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_person_black_24dp"
         android:contentDescription="Icone de Perfil"
-        android:title="Perfil" />
+        android:title="@string/menu_profile" />
 </menu>

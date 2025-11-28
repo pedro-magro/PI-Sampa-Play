@@ -1,7 +1,6 @@
 package com.example.myapplication.data
 
-data class Categoria(
+data class ImagemResponse(
     val id: Int,
-    val nome: String
-
+    val url: String
 )

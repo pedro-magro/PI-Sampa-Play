@@ -1,37 +1,114 @@
 <resources>
+
+    <!-- App -->
     <string name="app_name">Sampa Play</string>
 
-    <string name="login_title">Ingresar</string>
-    <string name="login_email_hint">Escriba su email</string>
-    <string name="login_password_hint">Escriba su contraseña</string>
+    <!-- Menú -->
+    <string name="menu_home">Inicio</string>
+    <string name="menu_search">Buscar</string>
+    <string name="menu_profile">Perfil</string>
+    <string name="menu_about">Acerca de</string>
+
+    <!-- Inicio de sesión -->
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="login_email_hint">Ingresa tu correo electrónico</string>
+    <string name="login_password_hint">Ingresa tu contraseña</string>
     <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="login_button">Acceder</string>
     <string name="login_no_account">¿No tienes una cuenta? Regístrate</string>
+    <string name="logo_content_description">Logo de Sampa Play</string>
 
+    <!-- Registro -->
     <string name="register_title">Nuevo Usuario</string>
-    <string name="register_name_hint">Escriba su nombre completo</string>
+    <string name="register_name_hint">Ingresa tu nombre completo</string>
     <string name="register_button">Registrar</string>
-    <string name="register_has_account">¿Ya tienes una cuenta? Ingresar</string>
+    <string name="register_email_hint">Correo electrónico</string>
+    <string name="register_password_hint">Contraseña</string>
+    <string name="register_has_account">¿Ya tienes una cuenta? Inicia sesión</string>
 
-    <string name="home_title">Catálogo de Canchas</string>
-    <string name="card_details_button">Saber Más</string>
-    <string name="card_delete_button">Borrar</string>
-    <string name="card_edit_button">Editar</string>
-    <string name="default_name">Nombre No Informado</string>
-    <string name="default_address">Dirección No Informada</string>
-    <string name="default_category">Tipo: N/A</string>
+    <!-- Inicio -->
+    <string name="home_title">Descubrir</string>
+    <string name="home_section_nearby">Cerca de Ti</string>
+    <string name="home_section_top_rated">Mejor Valorados</string>
+    <string name="home_section_new">Nuevos en Sampa Play</string>
+    <string name="home_section_zone">En Tu Zona (%s)</string>
+    <string name="home_empty_list">No fue posible cargar los espacios. Inténtalo de nuevo.</string>
+    <string name="home_add_space_fab">Agregar un nuevo espacio</string>
 
-    <string name="search_title">Filtrar y Buscar Canchas</string>
-    <string name="search_hint">Buscar por Nombre o Dirección</string>
-    <string name="search_label_type">1. Tipo de Deporte:</string>
-    <string name="search_button_apply">Aplicar Filtros</string>
+    <string name="card_condition_empty">Sin información</string>
+
+    <string name="icon_description_location_pin">Ícono de ubicación</string>
+    <string name="icon_description_details_arrow">Flecha para ver detalles</string>
+
+    <!-- Búsqueda -->
+    <string name="search_title">Buscar Espacios</string>
+    <string name="search_text_hint">Buscar por Nombre o Dirección</string>
+    <string name="search_category_hint">Categoría</string>
+    <string name="search_zone_hint">Región (Zona)</string>
+    <string name="search_condition_title">Condición</string>
+    <string name="search_button_text">Buscar</string>
+
+    <string name="chip_condition_good">Buena</string>
+    <string name="chip_condition_average">Regular</string>
+    <string name="chip_condition_bad">Mala</string>
+
     <string name="search_results_title">Resultados de la Búsqueda:</string>
+    <string name="search_empty_results">No se encontraron espacios para esta búsqueda.</string>
 
+    <string name="card_image_description">Imagen del espacio</string>
+
+    <!-- Incluir / Editar Espacio -->
+    <string name="form_title_include">Agregar Nuevo Espacio</string>
+    <string name="form_title_include_user">Recomendar Espacio</string>
+    <string name="form_title_edit">Editar Espacio</string>
+
+    <string name="form_hint_name">Nombre del Espacio</string>
+    <string name="form_hint_address">Dirección</string>
+    <string name="form_hint_cep">Código Postal (ej: 01000-000)</string>
+    <string name="form_hint_category">Categoría</string>
+    <string name="form_hint_zone">Zona</string>
+
+    <string name="form_label_image">Imagen del Espacio</string>
+    <string name="form_button_upload_image">Subir Imagen</string>
+    <string name="form_upload_icon_desc">Ícono de subida</string>
+
+    <string name="form_label_status_admin">Estado: Aprobado (Visible para todos)</string>
+
+    <string name="form_button_save">Guardar Cambios</string>
+    <string name="form_button_include">Agregar Espacio</string>
+    <string name="form_button_cancel">Cancelar</string>
+
+    <!-- Sobre Nosotros -->
+    <string name="about_title">Acerca de Sampa Play</string>
+    <string name="about_description">Sampa Play es tu aplicación definitiva para encontrar áreas públicas recreativas y deportivas en São Paulo...</string>
+    <string name="about_project_data">Datos del Proyecto</string>
+    <string name="about_developer">Desarrollador: Pedro Henrique de Lima Simões Magro</string>
+    <string name="about_discipline">Disciplina: Programación Orientada a Dispositivos Móviles</string>
+    <string name="about_coordinator">Orientador: Mauricio Ferraz Kubo</string>
+    <string name="about_contacts_links">Contactos y Enlaces</string>
+    <string name="about_contact_email">Correo de Contacto</string>
+    <string name="about_contact_linkedin">sampaPlay.suporte@gmail.com</string>
+
+    <!-- Admin -->
+    <string name="admin_title">Panel de Administración</string>
+    <string name="admin_empty_list">No hay espacios para gestionar.</string>
+    <string name="admin_fab_add_space">Agregar nuevo espacio</string>
+
+    <string name="admin_card_status_approved">Estado: Aprobado</string>
+    <string name="admin_card_status_pending">Estado: Pendiente de Aprobación</string>
+
+    <string name="admin_button_edit_desc">Editar Espacio</string>
+    <string name="admin_button_delete_desc">Eliminar Espacio</string>
+
+    <!-- Detalles -->
     <string name="details_title">Detalles del Espacio</string>
+    <string name="details_image_description">Imagen del espacio</string>
     <string name="details_location_label">Ubicación Completa</string>
+
     <string name="details_button_maps">Abrir en Google Maps</string>
     <string name="details_button_whatsapp">Invitar Amigos por WhatsApp</string>
 
+    <!-- Feedback -->
     <string name="feedback_form_title">Deja tu Opinión</string>
     <string name="feedback_condition_label">¿Cuál es la condición actual?</string>
     <string name="feedback_condition_good">Buena (Lista para usar)</string>
@@ -40,26 +117,89 @@
     <string name="feedback_observation_hint">Escribe tu observación (opcional)...</string>
     <string name="feedback_button_send">Enviar Opinión</string>
     <string name="feedback_list_title">Opiniones de la Comunidad</string>
+    <string name="feedback_empty_list">¡Sé el primero en enviar una opinión!</string>
 
-    <string name="about_title">Sobre Sampa Play</string>
-    <string name="about_description">Sampa Play es tu aplicación definitiva para encontrar áreas públicas...</string>
-    <string name="about_project_data">Datos del Proyecto</string>
-    <string name="about_developer">Desarrollador: Pedro Henrique de Lima Simões Magro</string>
-    <string name="about_discipline">Disciplina: Programación Orientada a Dispositivos Móviles</string>
-    <string name="about_coordinator">Tutor: Mauricio Ferraz Kubo</string>
-    <string name="about_contacts_links">Contactos y Enlaces</string>
-    <string name="about_contact_email">Email de Contacto</string>
-    <string name="about_contact_linkedin">LinkedIn</string>
+    <!-- Perfil -->
+    <string name="profile_title">Mi Perfil</string>
+    <string name="profile_icon_desc">Ícono de perfil</string>
 
+    <string name="profile_settings_title">Configuraciones</string>
+    <string name="profile_language_button">Cambiar Idioma</string>
+    <string name="profile_language_hint">Seleccionar Idioma</string>
+    <string name="profile_language_icon_desc">Ícono de globo para idiomas</string>
+
+    <string name="profile_language_title">Idioma</string>
+    <string name="profile_lang_pt">Portugués (Brasil)</string>
+    <string name="profile_lang_en">Inglés</string>
+    <string name="profile_lang_es">Español</string>
+
+    <string name="profile_logout_button">Cerrar Sesión</string>
+
+    <!-- Anuncios -->
+    <string name="home_ad_carousel_desc">Carrusel de destacados y anuncios</string>
+    <string name="home_ad_image_desc">Anuncio: %s</string>
+
+    <!-- Errores / Mensajes -->
+    <string name="erro_campos_obrigatorios">Completa todos los campos obligatorios.</string>
+    <string name="erro_upload_imagem">Error al subir la imagen. Inténtalo de nuevo.</string>
+    <string name="erro_api_generico">Error inesperado. Inténtalo nuevamente.</string>
+    <string name="toast_login_success">¡Inicio de sesión exitoso! ¡Bienvenido </string>
+    <string name="erro_credencias_invalidas">Credenciales inválidas.</string>
+    <string name="erro_carregar_zonas">Error al cargar las zonas.</string>
+    <string name="erro_zona_nao_selecionada">Por favor, selecciona una zona.</string>
+    <string name="erro_zona_invalida">Zona inválida</string>
+    <string name="erro_carregar_categorias">Error al cargar las categorías.</string>
+    <string name="erro_categoria_nao_selecionada">Por favor, selecciona una categoría.</string>
+    <string name="erro_categoria_invalida">Categoría inválida</string>
+    <string name="erro_condicao_nao_selecionada">Por favor, selecciona una condición.</string>
+    <string name="msg_sucesso_incluir">¡Espacio agregado con éxito!</string>
+    <string name="erro_salvar_espaco">Error al guardar el espacio.</string>
+    <string name="erro_salvar_espaco_status">¡Datos guardados, pero error al actualizar el estado.</string>
     <string name="toast_register_success">¡Usuario registrado con éxito!</string>
-    <string name="toast_register_fail">Error al registrar. Inténtelo de nuevo.</string>
+    <string name="toast_register_fail">Error al registrar. Inténtalo de nuevo.</string>
     <string name="toast_update_success">¡Espacio actualizado con éxito!</string>
-    <string name="toast_update_fail">Error en la actualización</string>
-    <string name="toast_delete_success">¡Espacio borrado con éxito!</string>
-    <string name="toast_delete_fail">Error al borrar el espacio</string>
+    <string name="toast_update_fail">Error al actualizar.</string>
+
+    <string name="delete_title">Eliminar Espacio</string>
+    <string name="delete_message">Esta acción no se puede deshacer. ¿Estás seguro de que quieres eliminar este espacio?</string>
+    <string name="delete_button_delete">Eliminar</string>
+    <string name="delete_button_cancel">Cancelar</string>
+    <string name="toast_delete_success">¡Espacio eliminado con éxito!</string>
+    <string name="toast_delete_fail">Error al eliminar el espacio.</string>
+
     <string name="toast_feedback_success">¡Opinión enviada con éxito!</string>
-    <string name="toast_feedback_fail">Error al enviar. Inténtelo de nuevo.</string>
-    <string name="toast_search_no_results">No se encontraron resultados</string>
-    <string name="toast_connection_fail">Falla de conexión</string>
+    <string name="toast_feedback_load_fail">Error al cargar las opiniones</string>
+    <string name="toast_feedback_fail">Error al enviar. Inténtalo de nuevo.</string>
+    <string name="toast_search_no_results">No se encontraron resultados.</string>
+    <string name="toast_search_fail_load_data">Error al cargar los datos</string>
+    <string name="erro_carregar_dados">Error al cargar los datos</string>
+    <string name="toast_connection_fail">Fallo de conexión</string>
+    <string name="erro_carregar_espacos">Error al cargar los espacios</string>
+    <string name="details_location_title">Ubicación Completa</string>
+    <string name="details_button_maps_desc">Botón para abrir en Google Maps</string>
+    <string name="toast_maps_error">Error al abrir en Google Maps</string>
+    <string name="details_button_whatsapp_desc">Botón para invitar amigos por WhatsApp</string>
+    <string name="toast_whatsapp_error">Error al invitar amigos por WhatsApp</string>
+    <string name="erro_carregar_perfil">Error al cargar el perfil</string>
+
+
+    <string name="feedback_section_title">Deja tu Opinión</string>
+    <string name="feedback_option_good">Buena (Lista para usar)</string>
+    <string name="feedback_option_average">Regular (Necesita reparaciones)</string>
+    <string name="feedback_option_bad">Mala / Insegura</string>
+    <string name="feedback_button_send_desc">Botón para enviar opinión</string>
+    <string name="feedback_community_title">Opiniones de la Comunidad</string>
+
+    <string name="profile_logout_button_desc">Botón para cerrar sesión</string>
+
+    <string name="about_logo_description">Logotipo de Sampa Play</string>
+    <string name="about_app_description">Sampa Play es tu aplicación definitiva para encontrar áreas públicas recreativas y deportivas en São Paulo.</string>
+    <string name="about_project_data_title">Datos del Proyecto</string>
+    <string name="about_developer_name">Desarrollador: Pedro Henrique de Lima Simões Magro</string>
+    <string name="about_discipline_name">Disciplina: Programación Orientada a Dispositivos Móviles</string>
+    <string name="about_professor_name">Orientador: Mauricio Ferraz Kubo</string>
+    <string name="about_links_title">Contactos y Enlaces</string>
+    <string name="about_contact_email_desc">Enlace de contacto por correo electrónico</string>
+
 
 </resources>

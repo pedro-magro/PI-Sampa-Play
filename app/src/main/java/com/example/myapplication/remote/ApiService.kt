@@ -1,95 +1,128 @@
 package com.example.myapplication.remote
 
-import FeedbackResponse
-import com.example.myapplication.data.CadastroResponse
-import com.example.myapplication.data.Categoria
-import com.example.myapplication.data.Espaco
-import com.example.myapplication.data.Feedback
-import com.example.myapplication.data.Zona
+
+import com.example.myapplication.data.CategoriaResponse
+import com.example.myapplication.data.CondicaoResponse
+import com.example.myapplication.data.EspacoRequest
+import com.example.myapplication.data.EspacoResponse
+import com.example.myapplication.data.FeedbackRequest
+import com.example.myapplication.data.FeedbackResponse
+import com.example.myapplication.data.ImagemResponse
+import com.example.myapplication.data.LoginRequest
+import com.example.myapplication.data.LoginResponse
+import com.example.myapplication.data.RegisterRequest
+import com.example.myapplication.data.RegisterResponse
+import com.example.myapplication.data.UsuarioResponse
+import com.example.myapplication.data.ZonaResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
 
-    // MÃƒÂ©todo para obter a lista de espacos
-    @GET("listar.php")
-    fun getEspacos(@Query("usuario_zona_id") usuarioZonaId: Int?): Call<List<Espaco>>
+    //--AUTETIFICAÇÃO-->
 
-    @GET("listar_admin.php")
-    fun getEspacosAdmin(): Call<List<Espaco>>
+    @POST("auth/login")
+    fun login(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
-    // MÃƒÂ©todo para incluir um espaco
-    @FormUrlEncoded
-    @POST("incluir_espaco.php")
-    fun incluirEspaco(
-        @Field("ESPACO_NOME") nome: String,
-        @Field("ESPACO_ENDERECO") endereco: String,
-        @Field("ESPACO_CEP") cep: String?,
-        @Field("ESPACO_IMG") imgUrl: String?,
-        @Field("CATEGORIA_ID")  categoriaId: Int,
-        @Field("ESPACO_APROVADO") aprovado: Int,
-        @Field("ZONA_ID") zonaId: Int?
-    ): Call<Void>
+    @POST("auth/register")
+    fun register(@Body registerRequest: RegisterRequest): Call<RegisterResponse>
 
-    // MÃƒÂ©todo para editar um espaco
-    @FormUrlEncoded
-    @POST("editar_espaco.php")
-    fun editarEspaco(
-        @Field("ESPACO_ID") id: Int,
-        @Field("ESPACO_NOME") nome: String,
-        @Field("ESPACO_ENDERECO") endereco: String,
-        @Field("ESPACO_CEP") cep: String?,
-        @Field("ESPACO_IMG") imgUrl: String?,
-        @Field("CATEGORIA_ID") categoriaId: Int, // Adicionado
-        @Field("ESPACO_APROVADO") aprovado: Int, // Adicionado
-    ): Call<Void>
-
-    // MÃƒÂ©todo para deletar um espaco
-    @FormUrlEncoded
-    @POST("deletar_espaco.php")
-    fun deletarEspaco(
-        @Field("ESPACO_ID") id: Int
-    ): Call<Void>
-
-    @GET("listar_zonas.php")
-    fun getZonas(): Call<List<Zona>>
-
-    @FormUrlEncoded
-    @POST("cadastro.php")
-    fun cadastrarUsuario(
-        @Field("USUARIO_NOME") usuarioNome: String,
-        @Field("USUARIO_EMAIL") usuarioEmail: String,
-        @Field("USUARIO_SENHA") usuarioSenha : String,
-        @Field("ZONA_ID") zonaId: Int?
-    ): Call<CadastroResponse>
+    @GET("auth/me")
+    fun getMe(): Call<UsuarioResponse>
 
 
-    @GET("busca.php")
-    fun buscarEspaco(
-        @Query("termo") termo:String?,
-        @Query("categoria_id") categoriaId: Int?
-    ): Call<List<Espaco>>
+    //--ESPACOS-->
+    @GET("espacos")
+    fun listarEspacos(): Call<List<EspacoResponse>>
+
+    @GET("espacos/{id}")
+    fun buscarPorId(@Path("id") id: Int): Call<EspacoResponse>
+
+    @GET("espacos/filtrar")
+    fun filtrar(
+        @Query("termo") termo: String?,
+        @Query("categoriaId") categoriaId: Int?,
+        @Query("zonaId") zonaId: Int?
+    ): Call<List<EspacoResponse>>
+
+    @GET("espacos/em-alta")
+    fun emAlta(): Call<List<EspacoResponse>>
+
+    @GET("espacos/proximidade")
+    fun proximidade(
+        @Query("lat") lat: Double,
+        @Query("lng") lng: Double
+    ): Call<List<EspacoResponse>>
+
+    @GET("espacos/zona/{id}")
+    fun porZona(@Path("id") zonaId: Int): Call<List<EspacoResponse>>
+
+    @GET("espacos/condicao")
+    fun porCondicao(): Call<List<EspacoResponse>>
+
+    @GET("espacos/recentes")
+    fun recentes(): Call<List<EspacoResponse>>
+
+    // -------- ESPAÇOS (AUTENTICADOS) --------
+    @POST("espacos")
+    fun criarEspaco(@Body dto: EspacoRequest): Call<EspacoResponse>
 
 
-    @GET("categorias.php")
-    fun getCategorias() : Call<List<Categoria>>
+    // -------- ESPAÇOS (ADMIN) --------
+    @PUT("espacos/{id}")
+    fun atualizarEspaco(
+        @Path("id") id: Int,
+        @Body dto: EspacoRequest
+    ): Call<EspacoResponse>
 
-    @FormUrlEncoded
-    @POST("enviar_feedback.php")
-    fun enviarFeedback(
-        @Field("espaco_id") espacoId: Int,
-        @Field("usuario_id") usuarioId: Int,
-        @Field("condicao_id") condicaoId: Int,
-        @Field("observacao") feedbackObservacao: String
-    ): Call<FeedbackResponse>
+    @DELETE("espacos/{id}")
+    fun deletarEspaco(@Path("id") id: Int): Call<Void>
 
-    @GET("feedbacks.php")
-    fun getFeedbacks(
-        @Query("espaco_id") espacoId: Int
-    ): Call<List<Feedback>>
+    @PATCH("espacos/{id}/aprovar")
+    fun aprovarEspaco(
+        @Path("id") id: Int,
+        @Query("aprovado") aprovado: Boolean
+    ): Call<EspacoResponse>
+
+    @GET("espacos/admin")
+    fun listarTodos(): Call<List<EspacoResponse>>
+
+
+    // -------- FEEDBACK --------
+    @POST("feedbacks")
+    fun enviarFeedback(@Body dto: FeedbackRequest): Call<FeedbackResponse>
+
+    @GET("feedbacks/{espacoId}")
+    fun getFeedbacks(@Path("espacoId") espacoId: Int): Call<List<FeedbackResponse>>
+
+
+    // -------- CATEGORIAS, ZONAS, CONDIÇÕES --------
+    @GET("categorias")
+    fun listarCategorias(): Call<List<CategoriaResponse>>
+
+    @GET("zonas")
+    fun listarZonas(): Call<List<ZonaResponse>>
+
+    @GET("condicao")
+    fun listarCondicao(): Call<List<CondicaoResponse>>
+
+    // -------- IMAGENS --------
+    @Multipart
+    @POST("upload")
+    fun uploadImage(
+        @Part image: MultipartBody.Part
+    ): Call<ImagemResponse>
 
 }

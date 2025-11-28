@@ -1,172 +1,218 @@
 package com.example.myapplication.activities
 
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.example.myapplication.remote.ApiService
-import com.example.myapplication.data.Categoria
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.data.Zona
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.myapplication.adapters.ImagensAdapter
+import com.example.myapplication.data.CategoriaResponse
+import com.example.myapplication.data.ZonaResponse
+import com.example.myapplication.databinding.ActivityIncluirEspacoBinding
+import com.example.myapplication.CloudinaryApplication.MyApplication
+import com.example.myapplication.remote.RetrofitClient
+import com.example.myapplication.remote.SessionManager
+import com.example.myapplication.repositories.*
+import com.example.myapplication.screenViewModels.IncluirViewModel
+import com.example.myapplication.domainViewModels.UploadImagemViewModel
 
-class IncluirEspacoActivity : BaseActivity() {
+class IncluirEspacoActivity : AppCompatActivity() {
 
-    private lateinit var toolbar : Toolbar
+    private lateinit var binding: ActivityIncluirEspacoBinding
+    private lateinit var incluirViewModel: IncluirViewModel
+    private lateinit var uploadViewModel: UploadImagemViewModel
+    private lateinit var imagensAdapter: ImagensAdapter
 
-    private lateinit var nomeEditText: EditText
-    private lateinit var enderecoEditText: EditText
-    private lateinit var cepEditText: EditText
-    private lateinit var imagemEditText: EditText
+    private lateinit var toolbar: Toolbar
 
-    private lateinit var spCategoira: Spinner
-    private lateinit var salvarButton: Button
+    private var listaZonas: List<ZonaResponse> = emptyList()
+    private var listaCategorias: List<CategoriaResponse> = emptyList()
 
-    private lateinit var apiService: ApiService
+    private val listaUrisPendentes = mutableListOf<Uri>()
 
-    private var listaCategorias = listOf<Categoria>()
-    private lateinit var spinnerZona: Spinner
-    private var listaZonas = listOf<Zona>()
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                listaUrisPendentes.add(it)
+                imagensAdapter.adicionarImagem(it.toString())
+            }
+        }
 
-    private var categoriaSelecionadaId: Int = 0
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_incluir_espaco)
 
-        toolbar = findViewById(R.id.toolbarIncluirEspaco)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
+        binding = ActivityIncluirEspacoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        if(!SessionManager(this).isAdmin()){
+            binding.toolbarIncluir.title = getString(R.string.form_title_include_user)
 
-        nomeEditText = findViewById(R.id.nomeEditText)
-        enderecoEditText = findViewById(R.id.enderecoEditText)
-        cepEditText = findViewById(R.id.cepEditText)
-        imagemEditText = findViewById(R.id.imagemEditText)
-        spCategoira = findViewById(R.id.spinnerCategoria)
-        salvarButton = findViewById(R.id.salvarButton)
-        spinnerZona = findViewById(R.id.spinnerZona)
+        }
 
+        setupViewModels()
+        setupRecyclerView()
+        setupObservers()
+        setupListeners()
 
-        val aprovacao: Int = 0
+        incluirViewModel.carregarCategorias()
+        incluirViewModel.carregarZonas()
+    }
 
-        // ConfiguraÃƒÂ§ÃƒÂ£o do Retrofit
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.56.1/meu_projeto_api/") // Substitua pelo seu endereÃƒÂ§o base
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    private fun setupRecyclerView() {
+        imagensAdapter = ImagensAdapter(mutableListOf()) { urlRemovida ->
 
-        apiService = retrofit.create(ApiService::class.java)
-        loadCategoriasSpinner()
-        loadZonas()
+            imagensAdapter.removerImagem(urlRemovida)
+            listaUrisPendentes.removeIf { it.toString() == urlRemovida }
+        }
 
-        // LÃƒÂ³gica do BotÃƒÂ£o de Incluir
+        binding.rvImagens.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        salvarButton.setOnClickListener {
-            // Faz a requisição para incluir o espaco
-            val aprovacao = intent.getIntExtra("STATUS_APROVACAO",0)
-            val cep = cepEditText.text.toString().let { if (it.isEmpty()) null else it }
-            val imagem = imagemEditText.text.toString().let { if (it.isEmpty()) null else it }
-            val zonaSelecionada = spinnerZona.selectedItem as Zona
-            val zonaIdParaEnviar = zonaSelecionada.id
+        binding.rvImagens.adapter = imagensAdapter
+    }
 
-            apiService.incluirEspaco(
-                nomeEditText.text.toString(),
-                enderecoEditText.text.toString(),
-                cep,
-                imagem,
-                categoriaId = categoriaSelecionadaId,
-                aprovado = aprovacao,
-                zonaIdParaEnviar
-            ).enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@IncluirEspacoActivity, "Espaço incluido com sucesso!", Toast.LENGTH_LONG).show()
-                        finish()
-                    } else {
-                        Toast.makeText(this@IncluirEspacoActivity, "Erro na inclusÃƒÂ£o", Toast.LENGTH_LONG).show()
-                    }
+    private fun setupViewModels() {
+        val token = SessionManager(this).getToken()
+        val api = RetrofitClient.getInstance { token }
+
+        val incluirFactory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(c: Class<T>): T {
+                return IncluirViewModel(
+                    EspacoRepository(api),
+                    CategoriaRepository(api),
+                    ZonaRepository(api)
+                ) as T
+            }
+        }
+        incluirViewModel = ViewModelProvider(this, incluirFactory)[IncluirViewModel::class.java]
+
+        val uploadFactory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(c: Class<T>): T {
+                return UploadImagemViewModel(ImagemRepository()) as T
+            }
+        }
+        uploadViewModel = ViewModelProvider(this, uploadFactory)[UploadImagemViewModel::class.java]
+    }
+
+    private fun setupObservers() {
+
+        incluirViewModel.loading.observe(this) { controlar(it) }
+        uploadViewModel.loading.observe(this) { controlar(it) }
+
+        incluirViewModel.zonas.observe(this) { zonas ->
+            listaZonas = zonas
+            binding.actvZona.setAdapter(
+                ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, zonas.map { it.nome })
+            )
+        }
+
+        incluirViewModel.categorias.observe(this) { categorias ->
+            listaCategorias = categorias
+            binding.actvCategoria.setAdapter(
+                ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, categorias.map { it.nome })
+            )
+        }
+
+        uploadViewModel.uploadSucesso.observe(this) { urls ->
+            if(urls != null){
+                finalizarUpload(urls)
+            }
+        }
+
+        incluirViewModel.sucessoInclusao.observe(this) {
+            Toast.makeText(this, getString(R.string.msg_sucesso_incluir), Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
+        incluirViewModel.error.observe(this) { erro ->
+            if (erro != null) {
+                when(erro){
+                    "Selecione uma categoria" -> Toast.makeText(this, getString(R.string.erro_categoria_nao_selecionada), Toast.LENGTH_SHORT).show()
+                    "Erro ao salvar" -> Toast.makeText(this, getString(R.string.erro_salvar_espaco), Toast.LENGTH_SHORT).show()
+                    else -> Toast.makeText(this, erro, Toast.LENGTH_SHORT).show()
                 }
+                incluirViewModel.limparErro()
 
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Toast.makeText(this@IncluirEspacoActivity, "Erro ao incluir o espaço", Toast.LENGTH_LONG).show()
-                }
-            })
+
+            }
         }
     }
-    override fun onSupportNavigateUp(): Boolean {
-        finish() // Fecha esta Activity e volta para a tela anterior
-        return true
-    }
-    private fun loadCategoriasSpinner() {
-        apiService.getCategorias().enqueue(object : Callback<List<Categoria>> {
-            override fun onResponse(call: Call<List<Categoria>>, response: Response<List<Categoria>>) {
-                if (response.isSuccessful) {
-                    val listaComTodas = mutableListOf<Categoria>()
-                    listaComTodas.add(Categoria(id = 0, nome = "Todas as Categorias")) // '0' ou 'null'
 
-                    // 2. Adicione o restante das categorias da API
-                    listaComTodas.addAll(response.body() ?: emptyList())
-                    listaCategorias = listaComTodas
+    private fun setupListeners() {
 
-                    // Extrai apenas os nomes para o Adapter do Spinner
-                    val nomesCategorias = listaCategorias.map { it.nome }
+        binding.cardUpload.setOnClickListener {
+            pickImageLauncher.launch("image/*")
+        }
+        toolbar = binding.toolbarIncluir
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
 
-                    val spinnerAdapter = ArrayAdapter(this@IncluirEspacoActivity, android.R.layout.simple_spinner_item, nomesCategorias)
-                    spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spCategoira.adapter = spinnerAdapter
+        binding.btnSalvar.setOnClickListener {
 
-                    // Listener para saber qual ID foi selecionado
-                    spCategoira.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                            // Salva o ID da categoria selecionada
-                            categoriaSelecionadaId = listaCategorias[position].id
-                        }
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-                            categoriaSelecionadaId = 0
-                        }
-                    }
-                } else {
-                    Toast.makeText(this@IncluirEspacoActivity, "Erro ao carregar categorias", Toast.LENGTH_SHORT).show()
-                }
+            binding.btnSalvar.isEnabled = false
+            binding.cardUpload.isEnabled = false
+            binding.toolbarIncluir.setOnClickListener{ false }
+
+
+            val nome = binding.etNome.text.toString()
+            val endereco = binding.etEndereco.text.toString()
+
+            if (nome.isBlank() || endereco.isBlank()) {
+                Toast.makeText(this, getString(R.string.erro_campos_obrigatorios), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
-            override fun onFailure(call: Call<List<Categoria>>, t: Throwable) {
-                Log.e("API_CATEGORIA", "Falha: ${t.message}")
-            }
-        })
-    }
-    private fun loadZonas() {
-        apiService.getZonas().enqueue(object : Callback<List<Zona>> {
-            override fun onResponse(call: Call<List<Zona>>, response: Response<List<Zona>>) {
-                if (response.isSuccessful) {
-                    listaZonas = response.body() ?: emptyList()
 
-                    // Configura o adapter do Spinner
-                    val adapter = ArrayAdapter(this@IncluirEspacoActivity,
-                        android.R.layout.simple_spinner_item,
-                        listaZonas)
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinnerZona.adapter = adapter
-                }
+            val categoriaNome = binding.actvCategoria.text.toString()
+            val zonaNome = binding.actvZona.text.toString()
+
+            val categoriaId = listaCategorias.find { it.nome == categoriaNome }?.id
+            val zonaId = listaZonas.find { it.nome == zonaNome }?.id
+
+            if (categoriaId == null) {
+                binding.actvCategoria.error = getString(R.string.erro_categoria_nao_selecionada)
+                Toast.makeText(this, getString(R.string.erro_categoria_invalida), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
-            override fun onFailure(call: Call<List<Zona>>, t: Throwable) {
-                Toast.makeText(this@IncluirEspacoActivity, "Falha ao carregar zonas", Toast.LENGTH_SHORT).show()
+
+            if (zonaId == null) {
+                binding.actvZona.error = getString(R.string.erro_zona_nao_selecionada)
+                Toast.makeText(this, getString(R.string.erro_zona_invalida), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
-        })
+
+            if(listaUrisPendentes.isNotEmpty()){
+                uploadViewModel.uploadMultiplasImagens(listaUrisPendentes)
+            }else{
+                finalizarUpload(emptyList())
+            }
+        }
     }
 
+    private fun finalizarUpload(urls: List<String>) {
+        val categoriaId = listaCategorias.find { it.nome == binding.actvCategoria.text.toString() }?.id
+        val zonaId = listaZonas.find { it.nome == binding.actvZona.text.toString() }?.id
+
+        incluirViewModel.Salvar(
+            binding.etNome.text.toString(),
+            binding.etEndereco.text.toString(),
+            binding.etCep.text.toString(),
+            categoriaId ?: 0,
+            urls, // Envia as URLs finais
+            zonaId
+        )
+    }
+
+    private fun controlar(loading: Boolean) {
+        binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.btnSalvar.isEnabled = !loading
+        binding.cardUpload.isEnabled = !loading
+    }
 }

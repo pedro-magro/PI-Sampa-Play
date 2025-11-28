@@ -1,153 +1,164 @@
 package com.example.myapplication.activities
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.AdapterView
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.remote.ApiService
-import retrofit2.Call
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import com.example.myapplication.data.Categoria
-import com.example.myapplication.data.Espaco
-import com.example.myapplication.adapters.HomeAdapter
 import com.example.myapplication.R
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import retrofit2.Callback
+import com.example.myapplication.adapters.BuscaAdapter
+import com.example.myapplication.data.CategoriaResponse
+import com.example.myapplication.data.ZonaResponse
+import com.example.myapplication.databinding.ActivityBuscaBinding
+import com.example.myapplication.remote.RetrofitClient
+import com.example.myapplication.remote.SessionManager
+import com.example.myapplication.repositories.CategoriaRepository
+import com.example.myapplication.repositories.EspacoRepository
+import com.example.myapplication.repositories.ZonaRepository
+import com.example.myapplication.screenViewModels.BuscaViewModel
 
 class BuscaActivity : BaseActivity() {
 
-    private lateinit var etBuscaTexto: EditText
-    private lateinit var spinnerTipo: Spinner
-    private lateinit var btnAplicarBusca: Button
-    private lateinit var rvResultadosBusca: RecyclerView
-    private lateinit var tvVazio: TextView
+    private lateinit var binding: ActivityBuscaBinding
+    private lateinit var viewModel: BuscaViewModel
+    private val adapter = BuscaAdapter()
 
-
-    private lateinit var apiService: ApiService
-    private lateinit var espacosAdapter: HomeAdapter
-
-    // Armazena a lista de categorias e o ID selecionado
-    private var listaCategorias = listOf<Categoria>()
-    private var categoriaSelecionadaId: Int? = null
+    // Listas para mapear Nome -> ID
+    private var listaZonas: List<ZonaResponse> = emptyList()
+    private var listaCategorias: List<CategoriaResponse> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_busca)
+        binding = ActivityBuscaBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        setupBottomNavigation(navView, R.id.nav_search)
+        // 1. Configurar Menu Inferior (BaseActivity)
+        setupBottomNavigation(binding.bottomNavigation, R.id.nav_search)
 
-        // Inicialização dos componentes obrigatórios
-        etBuscaTexto = findViewById(R.id.etBuscaTexto)
-        spinnerTipo = findViewById(R.id.spinnerTipo)
-        btnAplicarBusca = findViewById(R.id.btnAplicarBusca)
-        rvResultadosBusca = findViewById(R.id.rvResultadosBusca)
-        tvVazio = findViewById(R.id.tvVazio)
+        // 2. Configurar ViewModel Manualmente
+        setupViewModel()
 
+        // 3. Configurar RecyclerView
+        binding.rvResultadosBusca.layoutManager = LinearLayoutManager(this)
+        binding.rvResultadosBusca.adapter = adapter
 
-        rvResultadosBusca.layoutManager = LinearLayoutManager(this)
+        // 4. Observadores e Listeners
+        setupObservers()
+        setupListeners()
 
+        // 5. Carregar Filtros Iniciais
+        viewModel.getZonas()
+        viewModel.getCategorias()
+    }
 
-        // Configuração do Spinner (Componente Obrigatório)
-        // O array de strings deve estar definido em res/values/strings.xml
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.56.1/meu_projeto_api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    private fun setupViewModel() {
+        val session = SessionManager(this)
+        val token = session.getToken()
+        val api = RetrofitClient.getInstance { token }
 
-        apiService = retrofit.create(ApiService::class.java)
+        val espacoRepo = EspacoRepository(api)
+        val zonaRepo = ZonaRepository(api)
+        val catRepo = CategoriaRepository(api)
 
-        espacosAdapter = HomeAdapter(emptyList(), apiService)
-        rvResultadosBusca.adapter = espacosAdapter
+        val factory = object : ViewModelProvider.Factory {
+            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                return BuscaViewModel(espacoRepo, zonaRepo, catRepo) as T
+            }
+        }
+        viewModel = ViewModelProvider(this, factory)[BuscaViewModel::class.java]
+    }
 
-        // 1. Carrega as categorias para o Spinner
-        loadCategoriasSpinner()
+    private fun setupObservers() {
+        // Loading
+        viewModel.loading.observe(this) { isLoading ->
+            //binding.progressBarBusca.visibility = if (isLoading) View.VISIBLE else View.GONE
+            toggleLoading(isLoading, binding.progressBarBusca)
+        }
 
-        // 2. Define o clique do botão de busca
-        btnAplicarBusca.setOnClickListener {
-            executarBusca()
+        // Erro
+        viewModel.error.observe(this) { msg ->
+            if (msg != null) {
+                when(msg){
+                    "Erro ao buscar por espaços" -> Toast.makeText(this, getString(R.string.toast_search_no_results), Toast.LENGTH_SHORT).show()
+                    "Erro ao carregar dados" -> Toast.makeText(this, getString(R.string.toast_search_fail_load_data), Toast.LENGTH_SHORT).show()
+                    "Categoria Inválida!" -> Toast.makeText(this, getString(R.string.erro_categoria_nao_selecionada), Toast.LENGTH_SHORT).show()
+                    "Zona Inválida!" -> Toast.makeText(this, getString(R.string.erro_zona_nao_selecionada), Toast.LENGTH_SHORT).show()
+
+                    else-> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+
+                }
+
+                viewModel.limparErro()
+            }
+        }
+
+        // Resultados da Busca
+        viewModel.resultadosBusca.observe(this) { lista ->
+            adapter.submitList(lista)
+
+            if (lista.isEmpty()) {
+                binding.tvVazio.visibility = View.VISIBLE
+                binding.rvResultadosBusca.visibility = View.GONE
+            } else {
+                binding.tvVazio.visibility = View.GONE
+                binding.rvResultadosBusca.visibility = View.VISIBLE
+            }
+        }
+
+        // Filtro: Zonas
+        viewModel.zonas.observe(this) { zonas ->
+            listaZonas = zonas
+            val nomes = zonas.map { it.nome }
+            val adapterZonas = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, nomes)
+            binding.actvBuscaZona.setAdapter(adapterZonas)
+        }
+
+        // Filtro: Categorias
+        viewModel.categorias.observe(this) { categorias ->
+            listaCategorias = categorias
+            val nomes = categorias.map { it.nome }
+            val adapterCats = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, nomes)
+            binding.actvBuscaCategoria.setAdapter(adapterCats)
         }
     }
-    private fun loadCategoriasSpinner() {
-        apiService.getCategorias().enqueue(object : Callback<List<Categoria>> {
-            override fun onResponse(call: Call<List<Categoria>>, response: Response<List<Categoria>>) {
-                if (response.isSuccessful) {
-                    val listaComTodas = mutableListOf<Categoria>()
-                    listaComTodas.add(Categoria(id = 0, nome = "Todas as Categorias")) // '0' ou 'null'
 
-                    // 2. Adicione o restante das categorias da API
-                    listaComTodas.addAll(response.body() ?: emptyList())
-                    listaCategorias = listaComTodas
+    private fun setupListeners() {
+        // Botão Aplicar
+        binding.btnAplicarBusca.setOnClickListener {
+            executarBusca()
+        }
 
-                    // Extrai apenas os nomes para o Adapter do Spinner
-                    val nomesCategorias = listaCategorias.map { it.nome }
+        // Teclado (Enter) no campo de texto
+        binding.etBuscaTexto.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                executarBusca()
+                true
+            } else false
+        }
 
-                    val spinnerAdapter = ArrayAdapter(this@BuscaActivity, android.R.layout.simple_spinner_item, nomesCategorias)
-                    spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinnerTipo.adapter = spinnerAdapter
-
-                    // Listener para saber qual ID foi selecionado
-                    spinnerTipo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                            // Salva o ID da categoria selecionada
-                            categoriaSelecionadaId = listaCategorias[position].id
-                        }
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-                            categoriaSelecionadaId = null
-                        }
-                    }
-                } else {
-                    Toast.makeText(this@BuscaActivity, "Erro ao carregar categorias", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<List<Categoria>>, t: Throwable) {
-                Log.e("API_CATEGORIA", "Falha: ${t.message}")
-            }
-        })
+        // (Opcional) Botão de ícone no fim do campo de texto para limpar
+        binding.tilBuscaTexto.setEndIconOnClickListener {
+            binding.etBuscaTexto.text?.clear()
+            // Se quiser recarregar tudo: executarBusca()
+        }
     }
+
     private fun executarBusca() {
-        val termo = etBuscaTexto.text.toString().let { if (it.isEmpty()) null else it }
-        val categoriaId = categoriaSelecionadaId // (Vindo do Spinner)
+        // 1. Texto
+        val termo = binding.etBuscaTexto.text.toString().takeIf { it.isNotBlank() }
 
-        // 2. A API de busca retorna o mesmo tipo de dado: List<Espaco>
-        apiService.buscarEspaco(termo, categoriaId).enqueue(object : Callback<List<Espaco>> {
-            override fun onResponse(call: Call<List<Espaco>>, response: Response<List<Espaco>>) {
-                if (response.isSuccessful) {
-                    val espacosFiltrados = response.body() ?: emptyList()
-                    if (espacosFiltrados.isEmpty()) {
-                        rvResultadosBusca.visibility = View.GONE
-                        tvVazio.visibility = View.VISIBLE
-                    }else{
-                        rvResultadosBusca.visibility = View.VISIBLE
-                        tvVazio.visibility = View.GONE
-                    }
+        // 2. ID da Zona (busca na lista local pelo nome selecionado)
+        val nomeZona = binding.actvBuscaZona.text.toString()
+        val zonaId = listaZonas.find { it.nome == nomeZona }?.id
 
-                    // 3. A REUTILIZAÇÃO ACONTECE AQUI:
-                    // Você instancia o MESMO EspacosAdapter,
-                    // mas alimenta ele com a LISTA FILTRADA.
-                    espacosAdapter.updateData(espacosFiltrados)
+        // 3. ID da Categoria
+        val nomeCat = binding.actvBuscaCategoria.text.toString()
+        val catId = listaCategorias.find { it.nome == nomeCat }?.id
 
-                    // 4. O RecyclerView da Busca usa o Adapter
-                    rvResultadosBusca.adapter = espacosAdapter
-                }
-            }
-
-            override fun onFailure(call: Call<List<Espaco>>, t: Throwable) {
-                Log.e("API_BUSCA", "Falha: ${t.message}")
-            }
-        })
+        // 4. Chama ViewModel
+        viewModel.buscar(termo, catId, zonaId)
     }
-
-
-
 }

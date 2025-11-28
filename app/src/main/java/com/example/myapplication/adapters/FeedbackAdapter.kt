@@ -1,6 +1,5 @@
 package com.example.myapplication.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,18 +8,21 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.data.Feedback
+import com.example.myapplication.data.FeedbackResponse
 
-class FeedbackAdapter(private val dataset: List<Feedback>) :
+class FeedbackAdapter(private var lista: List<FeedbackResponse>) :
     RecyclerView.Adapter<FeedbackAdapter.ViewHolder>() {
 
+    fun atualizarLista(novaLista: List<FeedbackResponse>) {
+        lista = novaLista
+        notifyDataSetChanged()
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        // Mapeia os IDs do item_feedback_card.xml
-        val tvStatus: TextView = view.findViewById(R.id.tvFeedbackStatus)
-        val ivIcon: ImageView = view.findViewById(R.id.ivFeedbackIcon)
-        val tvObservacao: TextView = view.findViewById(R.id.tvFeedbackObservacao)
-        val tvData: TextView = view.findViewById(R.id.tvFeedbackDate)
-        val ivIconData: ImageView = view.findViewById(R.id.ivFeedbackDateIcon)
+        val icone: ImageView = view.findViewById(R.id.ivFeedbackIcon)
+        val status: TextView = view.findViewById(R.id.tvFeedbackStatus)
+        val observacao: TextView = view.findViewById(R.id.tvFeedbackObservacao)
+        val data: TextView = view.findViewById(R.id.tvFeedbackDate)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,42 +32,36 @@ class FeedbackAdapter(private val dataset: List<Feedback>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var feedback = dataset[position]
-
+        val feedback = lista[position]
         val context = holder.itemView.context
 
-        // 1. Preenche os dados de texto
-        holder.tvStatus.text = feedback.condicaoNome ?: "N:A"
-        holder.tvObservacao.text = feedback.observacao ?: "" // Usa string vazia se a observação for nula
-        holder.tvData.text = feedback.dataEnvio
+        // 1. Preenche os textos
+        holder.status.text = feedback.condicaoNome
+        holder.observacao.text = feedback.observacao ?: ""
+        holder.data.text = feedback.dataEnvio // (Já vem formatada do Backend)
 
-        // 2. Lógica para definir o ícone e a cor
+        // 2. Define a cor e o ícone baseado no ID da Condição
         when (feedback.condicaoId) {
-            1 -> {
-                holder.ivIcon.setImageResource(R.drawable.ic_check_24) // Ícone de Check
-                // Tenta usar a cor da API, senão usa um verde padrão
-                val color = try { Color.parseColor(feedback.condicaoCor) } catch (e: Exception) { ContextCompat.getColor(context, R.color.feedback_bom) }
-                holder.ivIcon.setColorFilter(color)
+            1 -> { // Boa
+                holder.icone.setImageResource(R.drawable.ic_check_24)
+                holder.icone.setColorFilter(ContextCompat.getColor(context, R.color.feedback_bom))
+                holder.status.setTextColor(ContextCompat.getColor(context, R.color.feedback_bom))
             }
-            2 -> {
-                holder.ivIcon.setImageResource(R.drawable.ic_feedback_ruim_24dp) // Ícone de Aviso
-                val color = try { Color.parseColor(feedback.condicaoCor) } catch (e: Exception) { ContextCompat.getColor(context, R.color.feedback_razoavel) }
-                holder.ivIcon.setColorFilter(color)
+            2 -> { // Razoável
+                holder.icone.setImageResource(R.drawable.ic_feedback_ruim_24dp) // (use seu nome de arquivo)
+                holder.icone.setColorFilter(ContextCompat.getColor(context, R.color.feedback_razoavel))
+                holder.status.setTextColor(ContextCompat.getColor(context, R.color.feedback_razoavel))
             }
-            3 -> {
-                holder.ivIcon.setImageResource(R.drawable.ic_error_24dp) // Ícone de Erro/Cancel
-                val color = try { Color.parseColor(feedback.condicaoCor) } catch (e: Exception) { ContextCompat.getColor(context, R.color.feedback_ruim) }
-                holder.ivIcon.setColorFilter(color)
+            3 -> { // Ruim
+                holder.icone.setImageResource(R.drawable.ic_error_24dp)
+                holder.icone.setColorFilter(ContextCompat.getColor(context, R.color.feedback_ruim))
+                holder.status.setTextColor(ContextCompat.getColor(context, R.color.feedback_ruim))
             }
             else -> {
-                holder.ivIcon.setImageResource(R.drawable.ic_send_24) // Ícone padrão
-                holder.ivIcon.setColorFilter(Color.GRAY)
+                holder.icone.setImageResource(R.drawable.ic_feedback_ruim_24dp) // Default
             }
         }
-
-        // Garante que o ícone de data (calendário) esteja visível
-        holder.ivIconData.setImageResource(R.drawable.ic_calendar_black_24dp)
     }
 
-    override fun getItemCount() = dataset.size
+    override fun getItemCount() = lista.size
 }

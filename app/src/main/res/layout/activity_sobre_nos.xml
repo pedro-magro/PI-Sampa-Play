@@ -8,9 +8,32 @@
     android:background="@android:color/white"
     tools:context=".activities.SobreNosActivity">
 
+    <TextView
+        android:id="@+id/tvsobreNos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/about_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#212121"
+        android:padding="16dp"
+        android:background="#F5F5F5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:elevation="2dp"
+        android:contentDescription="@string/about_title"/>
+
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/tvsobreNos"
+        app:layout_constraintBottom_toTopOf="@id/separator_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,44 +41,27 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Título da Seção -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sobre Sampa Play"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="#212121"
-                android:layout_marginBottom="16dp"
-                android:gravity="center_horizontal"
-                android:contentDescription="Título principal do aplicativo"/>
-
-            <!-- Descrição do Aplicativo -->
-
             <ImageView
                 android:id="@+id/imgLogoLogin"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="32dp"
-                android:contentDescription="Logotipo Sampa Play"
-
-                android:src="@drawable/logo_sampa_play"
-
+                android:contentDescription="@string/about_logo_description"
+                android:src="@drawable/logo"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="O Sampa Play é o seu aplicativo definitivo para encontrar áreas públicas para fins esportivos e de recreação em São Paulo. Com uma interface intuitiva e recursos de busca avançados, você pode localizar quadras ativas, iluminadas e seguras para sua prática esportiva favorita. Nossa missão é conectar a comunidade esportiva e promover um estilo de vida mais ativo na cidade."
+                android:text="@string/about_app_description"
                 android:textColor="#212121"
                 android:textSize="14sp"
                 android:layout_marginBottom="32dp"/>
 
-            <!-- Dados do Projeto (Requisito da Disciplina) -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dados do Projeto"
+                android:text="@string/about_project_data_title"
                 android:textColor="#D50000"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -64,30 +70,29 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Desenvolvedor: Pedro Henrique de Lima Simões Magro"
+                android:text="@string/about_developer_name"
                 android:textColor="#212121"
                 android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Disciplina: Programação Orientada a Dispositivos Móveis"
+                android:text="@string/about_discipline_name"
                 android:textColor="#212121"
                 android:textSize="14sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Orientador: Mauricio Ferraz Kubo"
+                android:text="@string/about_professor_name"
                 android:textColor="#212121"
                 android:textSize="14sp"
                 android:layout_marginBottom="32dp"/>
 
-            <!-- Links de Contato (Requisito da Disciplina) -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contatos e Links"
+                android:text="@string/about_links_title"
                 android:textColor="#D50000"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -97,21 +102,21 @@
                 android:id="@+id/tvEmailContato"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="E-mail: contato@sampaplay.com"
+                android:text="Email: sampaplaybeta@gmail.com"
                 android:textColor="#D50000"
                 android:textSize="14sp"
                 android:autoLink="email"
-                android:contentDescription="Link de contato por e-mail"/>
+                android:contentDescription="@string/about_contact_email_desc"/>
 
             <TextView
                 android:id="@+id/tvLinkEquipe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LinkedIn: https://www.linkedin.com/in/pedrohlsmagro/"
+                android:text="Linkedln: https://www.linkedin.com/in/pedrohlsmagro/"
                 android:textColor="#D50000"
                 android:textSize="14sp"
                 android:autoLink="web"
-                android:contentDescription="Link para o LinkedIn da equipe"
+                android:contentDescription="@string/about_contact_email_desc"
                 android:layout_marginBottom="32dp"/>
 
         </LinearLayout>
@@ -121,7 +126,8 @@
         android:id="@+id/separator_line"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="#DDDDDD" app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        android:background="#DDDDDD"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -132,10 +138,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:menu="@menu/bottom_nav_menu"
         android:background="@android:color/white"
-
         app:itemIconTint="@color/bottom_nav_selector"
         app:itemTextColor="@color/bottom_nav_selector"
         android:elevation="8dp"/>

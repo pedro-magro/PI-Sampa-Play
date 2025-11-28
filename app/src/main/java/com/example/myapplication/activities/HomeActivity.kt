@@ -1,109 +1,196 @@
 package com.example.myapplication.activities
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
+import androidx.annotation.RequiresPermission
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.remote.ApiService
-import com.example.myapplication.data.Espaco
-import com.example.myapplication.adapters.HomeAdapter
 import com.example.myapplication.R
-import com.example.myapplication.util.SessionManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
-
-private lateinit var apiService : ApiService
-
-private lateinit var recyclerView: RecyclerView
-
-private lateinit var adapter: HomeAdapter
-
-private lateinit var addEspacoButton: FloatingActionButton
-
-
+import com.example.myapplication.adapters.HomeFeedAdapter
+import com.example.myapplication.adapters.HomeFeedItem
+import com.example.myapplication.data.EspacoResponse
+import com.example.myapplication.databinding.ActivityHomeBinding
+import com.example.myapplication.remote.RetrofitClient
+import com.example.myapplication.remote.SessionManager
+import com.example.myapplication.repositories.EspacoRepository
+import com.example.myapplication.screenViewModels.HomeViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class HomeActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityHomeBinding
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var feedAdapter: HomeFeedAdapter
+    private lateinit var fusedLocationProvider: FusedLocationProviderClient
+
+    private val REQUEST_LOCATION_PERMISSION = 1001
+
+    private var listaZona: List<EspacoResponse> = emptyList()
+    private var listaEmAlta: List<EspacoResponse> = emptyList()
+    private var listaNovos: List<EspacoResponse> = emptyList()
+    private var listaPerto: List<EspacoResponse> = emptyList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        setupBottomNavigation(navView, R.id.nav_home)
+        setupBottomNavigation(binding.bottomNavigation, R.id.nav_home)
 
-        recyclerView = findViewById(R.id.recyclerViewEspacos)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        // ViewModel sem factory
+        setupViewModel()
 
-        addEspacoButton = findViewById(R.id.incluirEspacoButton)
-        val tvVazio = findViewById<TextView>(R.id.tvVazio)
+        fusedLocationProvider = LocationServices.getFusedLocationProviderClient(this)
 
-
-        val zonaIdUsuario = SessionManager.getUserZonaId(this)
-        val logging = HttpLoggingInterceptor { message ->
-            Log.d("OkHttp", message)
-        }.apply {
-            level = HttpLoggingInterceptor.Level.BODY
+        feedAdapter = HomeFeedAdapter(emptyList())
+        binding.rvHomeFeed.apply {
+            layoutManager = LinearLayoutManager(this@HomeActivity)
+            adapter = feedAdapter
         }
 
-        // ConfiguraÇÃo do OkHttpClient com o interceptor
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.56.1/meu_projeto_api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-
-        apiService = retrofit.create(ApiService::class.java)
-        apiService.getEspacos(zonaIdUsuario).enqueue(object : Callback<List<Espaco>> {
-            override fun onResponse(call: Call<List<Espaco>>, response: Response<List<Espaco>>) {
-                if (response.isSuccessful) {
-                    val espacos = response.body() ?: emptyList()
-
-                    if(espacos.isEmpty()){
-                        tvVazio.visibility = View.VISIBLE
-                        recyclerView.visibility = View.GONE
-                    }else{
-                        tvVazio.visibility = View.GONE
-                        recyclerView.visibility = View.VISIBLE
-                    }
-                    adapter = HomeAdapter(
-                        espacos,
-                        apiService = apiService
-                    )
-                    recyclerView.adapter = adapter
-                } else {
-                    Log.e("API Error", "Response not successful. Code: ${response.code()}")
-                }
-            }
-            override fun onFailure(call: Call<List<Espaco>>, t: Throwable) {
-                Log.e("API Failure", "Error fetching products", t)
-            }
-        })
-
-        addEspacoButton.setOnClickListener {
-            val intent = Intent(this, IncluirEspacoActivity::class.java)
-            //envia a aprovação como pendente por ser um usuario comum, admins tem seu proprio painel.
-            intent.putExtra("STATUS_APROVACAO", 0)
-            startActivity(intent)
+        binding.incluirEspacoButton.setOnClickListener {
+            startActivity(Intent(this, IncluirEspacoActivity::class.java))
         }
 
+        setupObservers()
+        pedirLocalizacao()
+    }
+
+    private fun setupViewModel() {
+        val session = SessionManager(this)
+        val token = session.getToken()
+        val apiService = RetrofitClient.getInstance { token }
+        val repository = EspacoRepository(apiService)
+
+        val factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return HomeViewModel(repository, session) as T
+            }
+        }
+        viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+    }
+
+    private fun pedirLocalizacao() {
+        val fine = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarse = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if (fine != PackageManager.PERMISSION_GRANTED && coarse != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                REQUEST_LOCATION_PERMISSION
+            )
+            return
+        }
+
+        pegarLocalizacao()
+    }
+
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pegarLocalizacao()
+            } else {
+                viewModel.carregarHome()
+            }
+        }
+    }
+
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
+    private fun pegarLocalizacao() {
+        fusedLocationProvider.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                viewModel.buscarProximos(location.latitude, location.longitude)
+                viewModel.carregarHome()
+            } else {
+                viewModel.carregarHome()
+            }
+        }.addOnFailureListener {
+            viewModel.carregarHome()
+        }
+    }
+
+    private fun setupObservers() {
+
+        viewModel.loading.observe(this) {
+            //binding.progressBarHome.visibility = if (it) View.VISIBLE else View.GONE
+            toggleLoading(it, binding.progressBarHome)
+        }
+
+        viewModel.error.observe(this) { erro ->
+            if (erro != null) {
+                Toast.makeText(this, erro, Toast.LENGTH_SHORT).show()
+                viewModel.limparErro()
+            }
+        }
+
+        viewModel.espacosZona.observe(this) {
+            listaZona = it
+            reconstruirFeed()
+        }
+
+        viewModel.espacosEmAlta.observe(this) {
+            listaEmAlta = it
+            reconstruirFeed()
+        }
+
+        viewModel.espacosRecentes.observe(this) {
+            listaNovos = it
+            reconstruirFeed()
+        }
+
+        viewModel.espacosProximos.observe(this) {
+            listaPerto = it
+            reconstruirFeed()
+        }
+    }
+
+    private fun reconstruirFeed() {
+        val feed = mutableListOf<HomeFeedItem>()
+
+        // Perto de Você
+        if (listaPerto.isNotEmpty()) {
+            feed.add(HomeFeedItem.Titulo("Perto de Você"))
+            feed.add(HomeFeedItem.CarroselHorizontal(listaPerto))
+        }
+
+        // Na sua Zona (sem nome)
+        if (listaZona.isNotEmpty()) {
+            feed.add(HomeFeedItem.Titulo("Na sua Zona"))
+            feed.add(HomeFeedItem.CarroselHorizontal(listaZona))
+        }
+
+        // Melhores avaliados
+        if (listaEmAlta.isNotEmpty()) {
+            feed.add(HomeFeedItem.Titulo("Melhores Avaliados"))
+            feed.add(HomeFeedItem.CarroselHorizontal(listaEmAlta))
+        }
+
+        // Novos
+        if (listaNovos.isNotEmpty()) {
+            feed.add(HomeFeedItem.Titulo("Novidades"))
+            listaNovos.forEach { espaco ->
+                feed.add(HomeFeedItem.EspacoVertical(espaco))
+            }
+        }
+
+        feedAdapter.updateItems(feed)
+
+        binding.tvVazio.visibility = if (feed.isEmpty()) View.VISIBLE else View.GONE
     }
 }

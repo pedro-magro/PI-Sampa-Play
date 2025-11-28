@@ -1,7 +1,15 @@
-import com.google.gson.annotations.SerializedName
+package com.example.myapplication.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class FeedbackResponse(
-    @SerializedName("status") val status: String,
-    @SerializedName("novaCondicaoId") val novaCondicaoId: Int?,
-    @SerializedName("novaCondicaoNome") val novaCondicaoNome: String?
-)
+    val id: Int,
+    val dataEnvio: String,
+    val observacao: String,
+    val condicaoId: Int,
+    val condicaoNome: String,
+    val usuarioNome: String
+
+): Parcelable

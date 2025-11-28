@@ -1,37 +1,114 @@
 <resources>
+
+    <!-- App -->
     <string name="app_name">Sampa Play</string>
 
+    <!-- Menu -->
+    <string name="menu_home">Home</string>
+    <string name="menu_search">Busca</string>
+    <string name="menu_profile">Perfil</string>
+    <string name="menu_about">Sobre</string>
+
+    <!-- Login -->
     <string name="login_title">Entrar</string>
     <string name="login_email_hint">Digite seu email</string>
     <string name="login_password_hint">Digite sua senha</string>
     <string name="login_forgot_password">Esqueceu a senha?</string>
     <string name="login_button">Acessar</string>
     <string name="login_no_account">Ainda não possui uma conta? Cadastre-se</string>
+    <string name="logo_content_description">Logo do Sampa Play</string>
 
+    <!-- Cadastro -->
     <string name="register_title">Novo Usuário</string>
     <string name="register_name_hint">Digite seu nome completo</string>
     <string name="register_button">Cadastrar</string>
+    <string name="register_email_hint">Email</string>
+    <string name="register_password_hint">Senha</string>
     <string name="register_has_account">Já possui uma conta? Faça o login</string>
 
-    <string name="home_title">Catálogo de Quadras</string>
-    <string name="card_details_button">Saiba Mais</string>
-    <string name="card_delete_button">Deletar</string>
-    <string name="card_edit_button">Editar</string>
-    <string name="default_name">Nome Não Informado</string>
-    <string name="default_address">Endereço Não Informado</string>
-    <string name="default_category">Tipo: N/A</string>
+    <!-- Home -->
+    <string name="home_title">Descobrir</string>
+    <string name="home_section_nearby">Perto de Você</string>
+    <string name="home_section_top_rated">Melhores Avaliados</string>
+    <string name="home_section_new">Novos no Sampa Play</string>
+    <string name="home_section_zone">Na sua Zona (%s)</string>
+    <string name="home_empty_list">Não foi possível carregar os espaços. Tente novamente.</string>
+    <string name="home_add_space_fab">Adicionar um novo espaço</string>
 
-    <string name="search_title">Filtrar e Buscar Quadras</string>
-    <string name="search_hint">Buscar por Nome ou Endereço</string>
-    <string name="search_label_type">1. Tipo de Esporte:</string>
-    <string name="search_button_apply">Aplicar Filtros</string>
+    <string name="card_condition_empty">Nenhuma informação</string>
+
+    <string name="icon_description_location_pin">Ícone de pino de localização</string>
+    <string name="icon_description_details_arrow">Seta para ver detalhes</string>
+
+    <!-- Busca -->
+    <string name="search_title">Buscar Espaços</string>
+    <string name="search_text_hint">Buscar por Nome ou Endereço</string>
+    <string name="search_category_hint">Categoria</string>
+    <string name="search_zone_hint">Região (Zona)</string>
+    <string name="search_condition_title">Condição</string>
+    <string name="search_button_text">Buscar</string>
+
+    <string name="chip_condition_good">Boa</string>
+    <string name="chip_condition_average">Razoável</string>
+    <string name="chip_condition_bad">Ruim</string>
+
     <string name="search_results_title">Resultados da Busca:</string>
+    <string name="search_empty_results">Nenhum espaço encontrado para esta busca.</string>
 
+    <string name="card_image_description">Imagem do espaço</string>
+
+    <!-- Incluir / Editar Espaço -->
+    <string name="form_title_include">Incluir Novo Espaço</string>
+    <string name="form_title_include_user">Recomendar Espaço</string>
+    <string name="form_title_edit">Editar Espaço</string>
+
+    <string name="form_hint_name">Nome do Espaço</string>
+    <string name="form_hint_address">Endereço</string>
+    <string name="form_hint_cep">CEP (ex: 01000-000)</string>
+    <string name="form_hint_category">Categoria</string>
+    <string name="form_hint_zone">Zona</string>
+
+    <string name="form_label_image">Imagem do Espaço</string>
+    <string name="form_button_upload_image">Carregar Imagem</string>
+    <string name="form_upload_icon_desc">Ícone de upload</string>
+
+    <string name="form_label_status_admin">Status: Aprovado (Visível para todos)</string>
+
+    <string name="form_button_save">Salvar Alterações</string>
+    <string name="form_button_include">Incluir Espaço</string>
+    <string name="form_button_cancel">Cancelar</string>
+
+    <!-- Sobre nós -->
+    <string name="about_title">Sobre Sampa Play</string>
+    <string name="about_description">O Sampa Play é o seu aplicativo definitivo para encontrar áreas públicas recreativas e esportivas em São Paulo.</string>
+    <string name="about_project_data">Dados do Projeto</string>
+    <string name="about_developer">Desenvolvedor: Pedro Henrique de Lima Simões Magro</string>
+    <string name="about_discipline">Disciplina: Programação para Dispositivos Móveis.</string>
+    <string name="about_coordinator">Orientador: Mauricio Ferraz Kubo</string>
+    <string name="about_contacts_links">Contatos e Links</string>
+    <string name="about_contact_email">E-mail para Contato</string>
+    <string name="about_contact_linkedin">sampaPlay.suporte@gmail.com</string>
+
+    <!-- Admin -->
+    <string name="admin_title">Painel de Admin</string>
+    <string name="admin_empty_list">Nenhum espaço para gerenciar.</string>
+    <string name="admin_fab_add_space">Adicionar novo espaço</string>
+
+    <string name="admin_card_status_approved">Status: Aprovado</string>
+    <string name="admin_card_status_pending">Status: Pendente de Aprovação</string>
+
+    <string name="admin_button_edit_desc">Editar Espaço</string>
+    <string name="admin_button_delete_desc">Deletar Espaço</string>
+
+    <!-- Detalhes -->
     <string name="details_title">Detalhes do Espaço</string>
+    <string name="details_image_description">Imagem do espaço</string>
     <string name="details_location_label">Localização Completa</string>
+
     <string name="details_button_maps">Abrir no Google Maps</string>
     <string name="details_button_whatsapp">Convidar Amigos via WhatsApp</string>
 
+    <!-- Feedback -->
     <string name="feedback_form_title">Deixe seu Feedback</string>
     <string name="feedback_condition_label">Qual a condição atual?</string>
     <string name="feedback_condition_good">Boa (Pronta para uso)</string>
@@ -40,26 +117,90 @@
     <string name="feedback_observation_hint">Escreva sua observação (opcional)...</string>
     <string name="feedback_button_send">Enviar Feedback</string>
     <string name="feedback_list_title">Feedbacks da Comunidade</string>
+    <string name="feedback_empty_list">Seja o primeiro a enviar um feedback!</string>
 
-    <string name="about_title">Sobre Sampa Play</string>
-    <string name="about_description">O Sampa Play é o seu aplicativo definitivo para encontrar áreas públicas...</string>
-    <string name="about_project_data">Dados do Projeto</string>
-    <string name="about_developer">Desenvolvedor: Pedro Henrique de Lima Simões Magro</string>
-    <string name="about_discipline">Disciplina: Programação Orientada a Dispositivos Móveis</string>
-    <string name="about_coordinator">Orientador: Mauricio Ferraz Kubo</string>
-    <string name="about_contacts_links">Contatos e Links</string>
-    <string name="about_contact_email">E-mail para Contato</string>
-    <string name="about_contact_linkedin">LinkedIn</string>
+    <!-- Perfil -->
+    <string name="profile_title">Meu Perfil</string>
+    <string name="profile_icon_desc">Ícone de Perfil</string>
 
+    <string name="profile_settings_title">Configurações</string>
+    <string name="profile_language_button">Mudar Idioma</string>
+    <string name="profile_language_hint">Selecionar Idioma</string>
+    <string name="profile_language_icon_desc">Ícone de globo para idiomas</string>
+
+    <string name="profile_language_title">Idioma</string>
+    <string name="profile_lang_pt">Português (Brasil)</string>
+    <string name="profile_lang_en">Inglês (English)</string>
+    <string name="profile_lang_es">Espanhol (Español)</string>
+
+    <string name="profile_logout_button">Sair (Logout)</string>
+
+    <!-- Anúncios -->
+    <string name="home_ad_carousel_desc">Carrossel de destaques e anúncios</string>
+    <string name="home_ad_image_desc">Anúncio: %s</string>
+
+    <!-- Erros / Toasts -->
+    <string name="erro_campos_obrigatorios">Preencha todos os campos obrigatórios.</string>
+    <string name="erro_upload_imagem">Erro ao enviar imagem. Tente novamente.</string>
+    <string name="erro_api_generico">Erro inesperado. Tente novamente.</string>
+    <string name="erro_credencias_invalidas">Credenciais inválidas.</string>
+    <string name="toast_login_success">Login realizado com sucesso! Bem vindo </string>
+    <string name="erro_carregar_zonas">Erro ao carregar zonas.</string>
+    <string name="erro_zona_nao_selecionada">Selecione uma zona.</string>
+    <string name="erro_zona_invalida">Zona inválida</string>
+    <string name="erro_carregar_categorias">Erro ao carregar categorias.</string>
+    <string name="erro_categoria_nao_selecionada">Selecione uma categoria.</string>
+    <string name="erro_categoria_invalida">Categoria inválida</string>
+    <string name="erro_condicao_nao_selecionada">Selecione uma condição.</string>
+    <string name="msg_sucesso_incluir">Espaço incluído com sucesso!</string>
+    <string name="erro_salvar_espaco">Erro ao salvar espaço.</string>
+    <string name="erro_salvar_espaco_status">Dados salvos, mas erro ao alterar status.</string>
     <string name="toast_register_success">Usuário cadastrado com sucesso!</string>
     <string name="toast_register_fail">Erro ao cadastrar. Tente novamente.</string>
+
+
     <string name="toast_update_success">Espaço atualizado com sucesso!</string>
     <string name="toast_update_fail">Erro na atualização</string>
+
+    <string name="delete_title">Deletar Espaço</string>
+    <string name="delete_message">Esta ação não poderá ser desfeita. Tem certeza que deseja deletar este espaço?</string>
+    <string name="delete_button_delete">Deletar</string>
+    <string name="delete_button_cancel">Cancelar</string>
     <string name="toast_delete_success">Espaço deletado com sucesso!</string>
     <string name="toast_delete_fail">Erro ao deletar o espaço</string>
+
     <string name="toast_feedback_success">Feedback enviado com sucesso!</string>
+    <string name="toast_feedback_load_fail">Erro ao carregar feedbacks</string>
     <string name="toast_feedback_fail">Erro ao enviar. Tente novamente.</string>
     <string name="toast_search_no_results">Nenhum resultado encontrado</string>
+    <string name="toast_search_fail_load_data">Erro ao carregar dados</string>
+    <string name="erro_carregar_dados">Erro ao carregar dados</string>
     <string name="toast_connection_fail">Falha de conexão</string>
+    <string name="erro_carregar_espacos">Erro ao carregar espaços"</string>
+    <string name="details_location_title">Localização Completa</string>
+    <string name="details_button_maps_desc">Botão para abrir no Google Maps</string>
+    <string name="toast_maps_error">Erro ao abrir no Google Maps"</string>
+    <string name="details_button_whatsapp_desc">Botão para convidar amigos via WhatsApp</string>
+    <string name="toast_whatsapp_error">Erro ao convidar amigos via WhatsApp"</string>
+    <string name="erro_carregar_perfil">Erro ao carregar perfil</string>
+
+    <string name="feedback_section_title">Deixe seu Feedback</string>
+    <string name="feedback_option_good">Boa (Pronta para uso)</string>
+    <string name="feedback_option_average">Razoável (Precisa de reparos)</string>
+    <string name="feedback_option_bad">Ruim / Insegura</string>
+    <string name="feedback_button_send_desc">Botão para enviar feedback</string>
+    <string name="feedback_community_title">Feedbacks da Comunidade</string>
+
+    <string name="profile_logout_button_desc">Botão para sair da conta</string>
+
+    <string name="about_logo_description">Logotipo Sampa Play</string>
+    <string name="about_app_description">O Sampa Play é o seu aplicativo definitivo para encontrar áreas públicas recreativas e esportivas em São Paulo.</string>
+    <string name="about_project_data_title">Dados do Projeto</string>
+    <string name="about_developer_name">Desenvolvedor: Pedro Henrique de Lima Simões Magro</string>
+    <string name="about_discipline_name">Disciplina: Programação Orientada a Dispositivos Móveis</string>
+    <string name="about_professor_name">Orientador: Mauricio Ferraz Kubo</string>
+    <string name="about_links_title">Contatos e Links</string>
+    <string name="about_contact_email_desc">Link para contato por e-mail</string>
+
 
 </resources>
