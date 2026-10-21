@@ -1,6 +1,6 @@
-# 🏟️ Sampa Play: O Canvas do App Colaborativo em Markdown
+# Sampa Play
 
-Este documento apresenta o Business Model Canvas do Sampa Play, um aplicativo móvel colaborativo projetado para transformar a experiência de uso de espaços públicos de lazer em São Paulo. A estrutura a seguir detalha a arquitetura técnica e o modelo de negócio, alinhados aos critérios do Empreenda.
+Este projeto tem como objetivo criar um aplicativo móvel colaborativo projetado para transformar a experiência de uso de espaços públicos de lazer em São Paulo. A estrutura a seguir detalha a arquitetura técnica e o modelo de negócio, alinhados aos critérios do Empreenda.
 
 ---
 
@@ -8,6 +8,7 @@ Este documento apresenta o Business Model Canvas do Sampa Play, um aplicativo m�
 
 #### 🎯 Proposta de Valor
 O Sampa Play transforma espaços públicos subutilizados, como quadras e academias ao ar livre, em locais de lazer seguros e confiáveis. Nossa plataforma centraliza informações sobre a **condição e segurança** desses locais, utilizando dados fornecidos de forma colaborativa pelos próprios usuários. Ao fazer isso, resolvemos a incerteza e a insegurança que impedem os cidadãos de aproveitarem os recursos de sua própria cidade.
+obs: Áreas públicas pertencem a todos, portanto não é permitido a locação ou eventos privados sem autorização dos orgãos ou autoridades competentes, ou a ação de privar outros de usufruir das mesmas não deve acontecer.
 
 #### 👥 Segmentos de Clientes
 * **Cidadãos de São Paulo:** Pessoas que buscam locais gratuitos para praticar esportes e atividades físicas, mas se sentem inseguras ou desinformadas sobre as condições dos espaços.
